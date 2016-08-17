@@ -34,19 +34,13 @@ Go to Google API Console and select your project, or create one:
 In Overview -> Google Maps API -> Google Maps Android API -> Check if it's enabled. Click button **Enable**!
 Create a new key by clicking on Create credentials -> API Key -> Android Key, enter the name of the API key and your SHA1 key, generated before, and create it.
 
-Add your Api key in  `android/app/src/main/AndroidManifest.xml`:
+Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`:
 
 ```xml
-<application
-  android:allowBackup="true"
-  android:label="@string/app_name"
-  android:icon="@mipmap/ic_launcher"
-  android:theme="@style/AppTheme">
-    <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
-    <meta-data
-      android:name="com.google.android.geo.API_KEY"
-      android:value="{{Your Google maps API Key Here}}"/>
-</application>
+<resources>
+    ...
+    <string name="google_api_key">{{Your Google maps API Key Here}}</string>
+</resources>
 ```
 
 More info https://github.com/lelandrichardson/react-native-maps/blob/master/docs/installation.md

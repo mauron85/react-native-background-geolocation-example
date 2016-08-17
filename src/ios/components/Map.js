@@ -50,7 +50,7 @@ class Map extends Component {
       httpHeaders: {
         'X-FOO': 'bar'
       }
-    });
+    }, function () {});
 
     BackgroundGeolocation.on('location', (location) => {
       console.log('[DEBUG] BackgroundGeolocation location', location);

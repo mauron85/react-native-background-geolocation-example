@@ -1,7 +1,7 @@
-rootProject.name = 'react-native-background-geolocation-example'
+rootProject.name = 'RNBGExample'
 
 include ':app'
 include ':react-native-mauron85-background-geolocation'
 project(':react-native-mauron85-background-geolocation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mauron85-background-geolocation/android')
-include ':react-native-maps'
-project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android')
+include ':react-native-maps:lib'
+project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android/lib')
