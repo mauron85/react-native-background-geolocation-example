@@ -41,14 +41,43 @@ class Map extends Component {
   }
 
   componentWillMount() {
+    function logError (msg) {
+      console.log(`[ERROR] getLocations: ${msg}`);
+    }
+
+    function handleHistoricLocations (locations) {
+      let region = {};
+      const now = Date.now();
+      const longitudeDelta = 0.01;
+      const latitudeDelta = 0.01;
+      const sameDayDiffInMillis = 24 * 3600 * 1000;
+      const historicLocations = this.state.locations.slice(0);
+
+      locations.forEach((location, idx) => {
+        if ((now - location.time) <= sameDayDiffInMillis) {
+          region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
+          historicLocations.push(Object.assign({}, location, { key: idx }));
+        }
+      });
+      if (historicLocations.length > 0) {
+        this.setState({ locations: historicLocations, region });        
+      }
+    }
+
+    BackgroundGeolocation.getLocations(handleHistoricLocations.bind(this), logError);
     BackgroundGeolocation.configure({
       desiredAccuracy: 10,
       stationaryRadius: 50,
       distanceFilter: 50,
       debug: true,
+      locationProvider: BackgroundGeolocation.provider.ANDROID_DISTANCE_FILTER_PROVIDER,
+      interval: 30000,
+      fastestInterval: 5000,
+      stopOnStillActivity: false,
       stopOnTerminate: false,
-      interval: 10000,
-      url: 'http://192.168.81.15:3000/location',
+      url: 'http://192.168.81.15:3000/locations',
+      syncThreshold: 50,
+      maxLocations: 100,
       httpHeaders: {
         'X-FOO': 'bar'
       }
@@ -63,6 +92,10 @@ class Map extends Component {
       locations.push(Object.assign({}, location, { key: locations.length }));
       this.setState({ locations, region });
     });
+    
+    BackgroundGeolocation.getConfig(
+      function(config) {console.log('[DEBUG] getConfig', config);}
+    );
   }
 
   toggleTracking() {
@@ -76,10 +109,33 @@ class Map extends Component {
   startTracking() {
     if (this.state.isTracking) { return; }
 
-    BackgroundGeolocation.start(() => {
-      console.log('[DEBUG] BackgroundGeolocation started successfully');
+    BackgroundGeolocation.isLocationEnabled((enabled) => {
+      if (enabled) {
+        BackgroundGeolocation.start(
+          () => {
+            // service started successfully
+            // you should adjust your app UI for example change switch element to indicate
+            // that service is running
+            console.log('[DEBUG] BackgroundGeolocation started successfully');
+            this.setState({ isTracking: true });
+          },
+          (error) => {
+            // Tracking has not started because of error
+            // you should adjust your app UI for example change switch element to indicate
+            // that service is not running
+            if (error.code === 2) {
+              BackgroundGeolocation.showAppSettings();
+            } else {
+              console.log('[ERROR] Start failed: ' + error.message);  
+            }
+            this.setState({ isTracking: false });
+          }
+        );
+      } else {
+        // Location services are disabled
+        BackgroundGeolocation.showLocationSettings();
+      }
     });
-    this.setState({ isTracking: true });
   }
 
   stopTracking() {
