@@ -7,27 +7,39 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   View,
+  Modal,
   Dimensions,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import Settings from './Settings';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  bar: {
+  toolbar: {
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#2196f3'
+    flexDirection: 'row',
+    backgroundColor: '#2196f3',
   },
-  button: {
+  startButton: {
+    flex: 1,
+    alignSelf: 'center',
+  },
+  settingsButton: {
+    width: 40,
+    marginRight: 5,
+    alignSelf: 'center',
+  },
+  buttonImage: {
     width: 40,
     height: 40,
-  }
+    alignSelf: 'center',
+  },
 });
 
 class Map extends Component {
@@ -36,7 +48,8 @@ class Map extends Component {
     this.state = {
       region: null,
       locations: [],
-      isTracking: false
+      isTracking: false,
+      settingsVisible: false
     };
   }
 
@@ -60,7 +73,7 @@ class Map extends Component {
         }
       });
       if (historicLocations.length > 0) {
-        this.setState({ locations: historicLocations, region });        
+        this.setState({ locations: historicLocations, region });
       }
     }
 
@@ -92,7 +105,7 @@ class Map extends Component {
       locations.push(Object.assign({}, location, { key: locations.length }));
       this.setState({ locations, region });
     });
-    
+
     BackgroundGeolocation.getConfig(
       function(config) {console.log('[DEBUG] getConfig', config);}
     );
@@ -126,7 +139,7 @@ class Map extends Component {
             if (error.code === 2) {
               BackgroundGeolocation.showAppSettings();
             } else {
-              console.log('[ERROR] Start failed: ' + error.message);  
+              console.log('[ERROR] Start failed: ' + error.message);
             }
             this.setState({ isTracking: false });
           }
@@ -136,6 +149,10 @@ class Map extends Component {
         BackgroundGeolocation.showLocationSettings();
       }
     });
+  }
+
+  setSettingsVisible(visible) {
+    this.setState({ settingsVisible: visible });
   }
 
   stopTracking() {
@@ -148,27 +165,41 @@ class Map extends Component {
   render() {
     var { height, width } = Dimensions.get('window');
     var Button = this.state.isTracking
-      ? <Image style={styles.button} source={require('./stop.png')} />
-      : <Image style={styles.button} source={require('./start.png')} />
+      ? <Image style={[styles.buttonImage]} source={require('./stop.png')} />
+      : <Image style={[styles.buttonImage]} source={require('./start.png')} />
 
     return (
       <View style={styles.container}>
-        <MapView
-          style={{ height: height - styles.bar.height, width, flex: 1 }}
-          region={this.state.region}
-        >
-        {this.state.locations.map(location => (
-          <MapView.Marker
-            key={location.key}
-            coordinate={location}
-            image={require('./TrackingDot.png')}
-          />
-        ))}
-        </MapView>
-        <View style={styles.bar}>
-          <TouchableOpacity onPress={this.toggleTracking.bind(this)}>
-            {Button}
-          </TouchableOpacity>
+        <Settings
+          onClose={this.setSettingsVisible.bind(this, false)}
+          visible={this.state.settingsVisible}
+        />
+        <View style={styles.container}>
+          <MapView
+            style={{ height: height - styles.toolbar.height, width, flex: 1 }}
+            region={this.state.region}
+          >
+          {this.state.locations.map(location => (
+            <MapView.Marker
+              key={location.key}
+              coordinate={location}
+              image={require('./TrackingDot.png')}
+            />
+          ))}
+          </MapView>
+        </View>
+        <View style={[styles.toolbar, { width }]}>
+          <View style={[styles.settingsButton]}>{/*just for centering*/}</View>
+          <View style={[styles.startButton]}>
+            <TouchableOpacity onPress={this.toggleTracking.bind(this)}>
+              {Button}
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.settingsButton]}>
+            <TouchableOpacity onPress={this.setSettingsVisible.bind(this, true)}>
+              <Image style={[styles.buttonImage]} source={require('./settings.png')} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );

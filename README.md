@@ -44,7 +44,7 @@ Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`
 ```
 
 Module [react-native-maps](https://github.com/lelandrichardson/react-native-maps) v0.7.1 requires Google Play Services library version 8.4.0 [(issue #420)](https://github.com/lelandrichardson/react-native-maps/issues/420), we need to change
-`node_modules/react-native-mauron85-background-geolocation/android/build.gradle`
+`node_modules/react-native-mauron85-background-geolocation/android/lib/build.gradle`
 
 ```
 dependencies {
