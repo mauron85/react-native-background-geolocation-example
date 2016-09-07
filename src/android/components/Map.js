@@ -61,19 +61,22 @@ class Map extends Component {
     function handleHistoricLocations (locations) {
       let region = {};
       const now = Date.now();
-      const longitudeDelta = 0.01;
       const latitudeDelta = 0.01;
+      const longitudeDelta = 0.01;
       const sameDayDiffInMillis = 24 * 3600 * 1000;
-      const historicLocations = this.state.locations.slice(0);
+      const currentLocations = this.state.locations.slice(0);
+      let locationsCount = currentLocations.length;
 
       locations.forEach((location, idx) => {
         if ((now - location.time) <= sameDayDiffInMillis) {
           region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
-          historicLocations.push(Object.assign({}, location, { key: idx }));
+          const histLocation = Object.assign({}, location, { key: locationsCount++ });
+          console.log('[DEBUG] historic location', histLocation.key);
+          currentLocations.push(histLocation);
         }
       });
-      if (historicLocations.length > 0) {
-        this.setState({ locations: historicLocations, region });
+      if (currentLocations.length > 0) {
+        this.setState({ locations: currentLocations, region });
       }
     }
 
@@ -102,7 +105,9 @@ class Map extends Component {
       const latitudeDelta = 0.01;
       const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
       const locations = this.state.locations.slice(0);
-      locations.push(Object.assign({}, location, { key: locations.length }));
+      const keyedLocation = Object.assign({}, location, { key: locations.length })
+      console.log('[DEBUG] on location', keyedLocation.key);
+      locations.push(keyedLocation);
       this.setState({ locations, region });
     });
 
