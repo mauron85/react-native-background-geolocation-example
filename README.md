@@ -22,17 +22,19 @@ Also read [setup instructions](https://www.npmjs.com/package/react-native-mauron
 
 Check android lib versions:
 
- Google Play services >= 30
- Google Repository >= 28
+| Name                       | Version |
+|----------------------------|---------|
+| Google Play Services       | >=30    |
+| Google Repository          | >=28    |
 
 Generate your SHA1 key to restrict usage to your app only (optional):
 
 `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android`
 
-Go to Google API Console and select your project, or create one:
+Go to [Google API Console](https://console.developers.google.com) and select your project, or create new one:
 
-In Overview -> Google Maps API -> Google Maps Android API -> Check if it's enabled. Click button **Enable**!
-Create a new key by clicking on Create credentials -> API Key -> Android Key, enter the name of the API key and your SHA1 key, generated before, and create it.
+In `Overview` -> `Google Maps API` -> `Google Maps Android API` -> Check if it's enabled. If not, click button **Enable**!
+Create a new key by clicking on `Create credentials` -> `API Key` -> `Android Key`, enter the name of the API key and your SHA1 key, generated before, and create it.
 
 Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`:
 
@@ -43,13 +45,13 @@ Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`
 </resources>
 ```
 
-Module [react-native-maps](https://github.com/lelandrichardson/react-native-maps) v0.7.1 requires Google Play Services library version 8.4.0 [(issue #420)](https://github.com/lelandrichardson/react-native-maps/issues/420), we need to change
+Module [react-native-maps](https://github.com/lelandrichardson/react-native-maps) v0.8.2 requires Google Play Services library version 9.4.0, we need to change
 `node_modules/react-native-mauron85-background-geolocation/android/lib/build.gradle`
 
 ```
 dependencies {
     ...
-    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
     ...
 }
 ```
@@ -60,7 +62,7 @@ More info https://github.com/lelandrichardson/react-native-maps/blob/master/docs
 
 `adb reverse tcp:8081 tcp:8081`
 
-`react-native run-android` 
+`react-native run-android`
 
 ### Run on Device
 
