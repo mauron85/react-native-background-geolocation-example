@@ -6,16 +6,17 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   View,
+  ListView,
   Text,
   Modal,
 } from 'react-native';
 
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import Logs from './Logs';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
   },
   toolbar: {
     height: 50,
@@ -31,9 +32,10 @@ const styles = StyleSheet.create({
   },
 });
 
-class Settings extends Component {
+class Logs extends Component {
   constructor(props) {
     super(props);
+    this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       logEntries: []
     };
@@ -48,6 +50,7 @@ class Settings extends Component {
   }
 
   render() {
+    const dataSource = this.dataSource.cloneWithRows(this.props.logFormatter(this.state.logEntries));
     return (
       <Modal
         animationType={"slide"}
@@ -56,17 +59,25 @@ class Settings extends Component {
         onRequestClose={() => {}}
         >
         <View style={styles.container}>
-          <Logs logEntries={this.state.logEntries} />
+          <ListView
+            dataSource={dataSource}
+            enableEmptySections={true}
+            renderRow={(rowData) =>
+              <View style={{ backgroundColor: rowData.style.backgroundColor }}>
+                <Text style={{ color: rowData.style.color }}>{ rowData.text }</Text>
+              </View>
+            }
+          />
         </View>
-        <View style={styles.toolbar}>
-          <TouchableOpacity onPress={this.props.onClose}>
+        <TouchableOpacity onPress={this.props.onClose}>
+          <View style={styles.toolbar}>
             <Text style={styles.button}>Dismiss</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </Modal>
     );
   }
 }
 
 
-export default Settings;
+export default Logs;

@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import Map from './src/ios/components/Map';
+import Map from './src/ios/Map';
 
 class RNBGExample extends Component {
   render() {

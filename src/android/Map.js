@@ -15,7 +15,8 @@ import {
 
 import MapView from 'react-native-maps';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import Settings from './Settings';
+import Logs from '../common/Logs';
+import logFormatter from '../utils/androidLogFormatter';
 
 const styles = StyleSheet.create({
   container: {
@@ -170,14 +171,15 @@ class Map extends Component {
   render() {
     var { height, width } = Dimensions.get('window');
     var Button = this.state.isTracking
-      ? <Image style={[styles.buttonImage]} source={require('./stop.png')} />
-      : <Image style={[styles.buttonImage]} source={require('./start.png')} />
+      ? <Image style={[styles.buttonImage]} source={require('../res/stop.png')} />
+      : <Image style={[styles.buttonImage]} source={require('../res/start.png')} />
 
     return (
       <View style={styles.container}>
-        <Settings
+        <Logs
           onClose={this.setSettingsVisible.bind(this, false)}
           visible={this.state.settingsVisible}
+          logFormatter={logFormatter}
         />
         <View style={styles.container}>
           <MapView
@@ -188,7 +190,7 @@ class Map extends Component {
             <MapView.Marker
               key={location.key}
               coordinate={location}
-              image={require('./TrackingDot.png')}
+              image={require('../res/TrackingDot.png')}
             />
           ))}
           </MapView>
@@ -202,7 +204,7 @@ class Map extends Component {
           </View>
           <View style={[styles.settingsButton]}>
             <TouchableOpacity onPress={this.setSettingsVisible.bind(this, true)}>
-              <Image style={[styles.buttonImage]} source={require('./settings.png')} />
+              <Image style={[styles.buttonImage]} source={require('../res/settings.png')} />
             </TouchableOpacity>
           </View>
         </View>
