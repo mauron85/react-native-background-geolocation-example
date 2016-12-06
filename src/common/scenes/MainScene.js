@@ -7,6 +7,7 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import TimerMixin from 'react-timer-mixin';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import MapView from 'react-native-maps';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
@@ -17,17 +18,17 @@ const styles = StyleSheet.create({
   },
 });
 
-class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+const MainScene = React.createClass({
+  mixins: [TimerMixin],
+
+  getInitialState() {
+    return {
       region: null,
       locations: [],
+      stationaries: [],
       isRunning: false
     };
-    this.goToSettings = this.goToSettings.bind(this);
-    this.toggleTracking = this.toggleTracking.bind(this);
-  }
+  },
 
   componentDidMount() {
     console.log('map did mount');
@@ -70,21 +71,14 @@ class Map extends Component {
       this.setState({ isRunning: false });
     });
 
-    BackgroundGeolocation.on('mode_change', (enabled) => {
-      console.log('[INFO] BackgroundGeolocation location is enabled: ' + enabled);
-      if (enabled) return;
-      Alert.alert('Location is disabled', 'Would you like to open location settings?', [
-        { text: 'Yes', onPress: () => BackgroundGeolocation.showLocationSettings() },
-        { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
-      ]);
-    });
-
-    BackgroundGeolocation.on('permissions_denied', () => {
-      console.log('[INFO] BackgroundGeolocation needs permissions');
-      Alert.alert('Not authorized for location updates', 'Would you like to open app settings?', [
-        { text: 'Yes', onPress: () => BackgroundGeolocation.showAppSettings() },
-        { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
-      ]);
+    BackgroundGeolocation.on('authorizationChange', (authStatus) => {
+      console.log('[INFO] BackgroundGeolocation location auth. status: ' + authStatus);
+      if (authStatus === 2) {
+        Alert.alert('Location is disabled', 'Would you like to open location settings?', [
+          { text: 'Yes', onPress: () => BackgroundGeolocation.showLocationSettings() },
+          { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
+        ]);
+      }
     });
 
     BackgroundGeolocation.on('error', ({ message }) => {
@@ -93,13 +87,37 @@ class Map extends Component {
 
     BackgroundGeolocation.on('location', (location) => {
       console.log('[DEBUG] BackgroundGeolocation location', location);
-      const longitudeDelta = 0.01;
-      const latitudeDelta = 0.01;
-      const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
-      const locations = this.state.locations.slice(0);
-      locations.push(location);
-      this.setState({ locations, region });
+      BackgroundGeolocation.startTask(taskKey => {
+        this.requestAnimationFrame(() => {
+          const longitudeDelta = 0.01;
+          const latitudeDelta = 0.01;
+          if (location.radius) {
+            const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
+            const stationaries = this.state.stationaries.slice(0);
+            stationaries.push(location);
+            this.setState({ stationaries, region });
+          } else {
+            const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
+            const locations = this.state.locations.slice(0);
+            locations.push(location);
+            this.setState({ locations, region });
+          }
+          BackgroundGeolocation.endTask(taskKey);
+        });
+      });
     });
+
+    // BackgroundGeolocation.on('stationary', (stationary) => {
+    //   console.log('[DEBUG] BackgroundGeolocation stationary', stationary);
+    //   BackgroundGeolocation.startTask(taskKey => {
+    //     this.requestAnimationFrame(() => {
+    //       const stationaries = this.state.stationaries.slice(0);
+    //       stationaries.push(stationary);
+    //       this.setState({ stationaries });
+    //       BackgroundGeolocation.endTask(taskKey);
+    //     });
+    //   });
+    // });
 
     BackgroundGeolocation.on('foreground', () => {
       console.log('[INFO] App is in foreground');
@@ -112,23 +130,23 @@ class Map extends Component {
     BackgroundGeolocation.checkStatus(({ isRunning }) => {
       this.setState({ isRunning });
     });
-  }
+  },
 
   componentWillUnmount() {
     BackgroundGeolocation.events.forEach(event => BackgroundGeolocation.removeAllListeners(event));
-  }
+  },
 
   goToSettings(visible) {
     this.props.navigator.replace({ name: 'Menu' });
-  }
+  },
 
   toggleTracking() {
-    BackgroundGeolocation.checkStatus(({ isRunning, locationModeOn }) => {
+    BackgroundGeolocation.checkStatus(({ isRunning, locationServicesEnabled }) => {
       if (isRunning) {
         BackgroundGeolocation.stop();
         return false;
       }
-      if (locationModeOn) {
+      if (locationServicesEnabled) {
         // calling start will also ask user for permission if needed
         // permission error will be handled in permisision_denied event
         BackgroundGeolocation.start();
@@ -140,11 +158,11 @@ class Map extends Component {
         ]);
       }
     });
-  }
+  },
 
   render() {
     const { height, width } = Dimensions.get('window');
-    const { locations, region, isRunning } = this.state;
+    const { locations, stationaries, region, isRunning } = this.state;
     return (
       <Container>
         <View style={styles.container}>
@@ -159,10 +177,21 @@ class Map extends Component {
               image={require('../../res/TrackingDot.png')}
             />
           ))}
+          {stationaries.map((stationary, idx) => {
+            return (
+              <MapView.Circle
+                key={idx}
+                center={stationary}
+                radius={stationary.radius}
+                fillColor="#AAA"
+              />
+            );
+          })}
           </MapView>
         </View>
         <Footer>
             <FooterTab>
+                <Button> </Button>
                 <Button transparent onPress={this.toggleTracking}>
                     <Icon name={isRunning ? 'ios-pause' : 'ios-play'} />
                 </Button>
@@ -174,7 +203,6 @@ class Map extends Component {
       </Container>
     );
   }
-}
+});
 
-
-export default Map;
+export default MainScene;

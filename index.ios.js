@@ -5,32 +5,14 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry } from 'react-native';
 
-import Map from './src/ios/Map';
+import App from './src/ios/App';
 
 class RNBGExample extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Map style={styles.map}/>
-      </View>
-    );
+    return ( <App /> );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-});
 
 AppRegistry.registerComponent('RNBGExample', () => RNBGExample);

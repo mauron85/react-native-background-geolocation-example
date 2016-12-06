@@ -1,9 +1,8 @@
 import React, {PropTypes, Component} from 'react';
 import { StyleSheet, InteractionManager, Alert, View } from 'react-native';
-import {Container, Header, Content, Title, Footer, List, ListItem, Text, Button, Icon} from 'native-base';
+import {Container, Header, Content, Footer, FooterTab, Title, List, ListItem, Text, Button, Icon} from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import MainButton from '../Button';
-import Preloader from '../Preloader';
+import {Preloader} from '../Components';
 
 const styles = StyleSheet.create({
   item: {
@@ -24,7 +23,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     color: '#0A69FE'
   },
-
 });
 
 const LogItem = ({ selected, locationId, latitude, longitude, time, onPress }) => {
@@ -103,7 +101,7 @@ class LocationHistoryScene extends Component {
               const date = new Date(loc.time);
               const selected = selectedLocationId === loc.locationId;
               return (
-                <LogItem {...loc} selected={selected} onPress={this.onLocationSelected}/>
+                <LogItem key={loc.locationId} {...loc} selected={selected} onPress={this.onLocationSelected}/>
               );
             }}>
         </List>
@@ -127,9 +125,11 @@ class LocationHistoryScene extends Component {
                   })()}
                 </Content>
                 <Footer>
-                  <MainButton onPress={this.onDelete}>
+                  <FooterTab>
+                  <Button onPress={this.onDelete}>
                       {selectedLocationId > -1 ? 'Delete location' : 'Delete all'}
-                  </MainButton>
+                  </Button>
+                  </FooterTab>
                 </Footer>
             </Container>
         );

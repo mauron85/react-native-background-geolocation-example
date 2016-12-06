@@ -11,6 +11,7 @@ import {
     ListItem,
     Text
 } from 'native-base';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
 const styles = StyleSheet.create({
   iconStyle: {
@@ -47,6 +48,14 @@ class SettingsScene extends Component {
                       <ListItem onPress={() => this.navigate('Config')}>
                           <Icon name="ios-settings" style={styles.iconStyle} />
                           <Text>Plugin Configuration</Text>
+                      </ListItem>
+                      <ListItem onPress={BackgroundGeolocation.showAppSettings}>
+                          <Icon name="ios-construct" style={styles.iconStyle} />
+                          <Text>Show App Settings</Text>
+                      </ListItem>
+                      <ListItem onPress={BackgroundGeolocation.showLocationSettings}>
+                          <Icon name="ios-compass" style={styles.iconStyle} />
+                          <Text>Show Location Settings</Text>
                       </ListItem>
                   </List>
               </Content>

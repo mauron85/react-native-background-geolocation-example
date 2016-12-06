@@ -10,10 +10,10 @@ import {
 const styles = StyleSheet.create({
   btn: {
     flex: 1,
-    width: 300, // flex seems no working
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#0A69FE'
   },
   btnLabel: {
     fontSize: 15,

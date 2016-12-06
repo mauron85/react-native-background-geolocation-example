@@ -4,7 +4,7 @@ import MainScene from '../common/scenes/MainScene';
 import MenuScene from '../common/scenes/MenuScene';
 import LogsScene from '../common/scenes/LogsScene';
 import LocationHistoryScene from '../common/scenes/LocationHistoryScene';
-import ConfigScene from '../android/scenes/ConfigScene';
+import ConfigScene from '../ios/scenes/ConfigScene';
 
 class App extends Component {
     constructor(props) {

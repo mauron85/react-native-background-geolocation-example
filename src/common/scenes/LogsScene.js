@@ -12,7 +12,7 @@ import {
     Icon
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import Preloader from '../Preloader';
+import Preloader from '../Components/Preloader';
 import logFormatter from '../../utils/logFormatter';
 
 class LogsScene extends Component {
