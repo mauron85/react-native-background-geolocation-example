@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,View,Text} from 'react-native';
+import {StyleSheet,Platform,View,Text} from 'react-native';
 import {Picker as PickerNB} from 'native-base';
 
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     input: {
       flex: 1,
     },
-    pickerSelf: {
+    pickerIos: {
       alignSelf: 'flex-end',
     },
 });
@@ -33,7 +33,7 @@ const Picker = ({ label, selectedItem, items, onItemChange, ...pickerProps }) =>
       </View>
       <View style={styles.input}>
         <PickerNB
-          style={styles.pickerSelf}
+          style={Platform.OS == 'ios' ? styles.pickerIos : styles.pickerAndroid}
           {...pickerProps}
           selectedValue={selectedItem}
           onValueChange={val => onItemChange(val)}>

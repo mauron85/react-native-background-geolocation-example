@@ -57,7 +57,7 @@ class ConfigScene extends Component {
       const config = Object.assign({}, this.state.config);
       const numeric = Number(value);
       if (!Number.isNaN(numeric)) {
-        config[key] = value;
+        config[key] = numeric;
       }
       this.setState({config});
     }

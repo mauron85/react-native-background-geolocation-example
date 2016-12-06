@@ -5,13 +5,16 @@ import {
     Header,
     Title,
     Content,
+    Footer,
+    FooterTab,
     Button,
     Icon,
     List,
     ListItem,
 } from 'native-base';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import CommonConfigScene from '../../common/scenes/ConfigScene';
-import {Preloader, Picker, InputGroup, Switch, ListItemDivider} from '../../common/Components';
+import {Preloader, Picker, InputGroup, Input, Switch, ListItemDivider} from '../../common/Components';
 
 const providers = [
   { label: 'Distance Filter', value: String(BackgroundGeolocation.provider.ANDROID_DISTANCE_FILTER_PROVIDER) },
@@ -60,7 +63,7 @@ class ConfigScene extends CommonConfigScene {
               </InputGroup>
             </ListItem>
             <ListItem itemDivider>
-                <Text style={styles.labelText}>Notification</Text>
+                <ListItemDivider>Notification</ListItemDivider>
             </ListItem>
             <ListItem>
                 <InputGroup>
@@ -104,6 +107,13 @@ class ConfigScene extends CommonConfigScene {
                     return <Preloader/>;
                   })()}
                 </Content>
+                <Footer>
+                  <FooterTab>
+                  <Button large onPress={this.configure}>
+                      Apply
+                  </Button>
+                  </FooterTab>
+                </Footer>
             </Container>
         );
     }
