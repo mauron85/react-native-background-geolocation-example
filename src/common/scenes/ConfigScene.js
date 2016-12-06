@@ -30,10 +30,15 @@ class ConfigScene extends Component {
     }
 
     getConfig() {
-      BackgroundGeolocation.getConfig(config => {
-          console.log(config);
-          this.setState({ config, isReady: true });
-      });
+      const successFn = (config) => {
+        console.log(config);
+        this.setState({ config, isReady: true });
+      };
+      const errorFn = (error) => {
+        console.log('[ERROR] Configuration error', error);
+        this.setState({ config: {}, isReady: true });
+      };
+      BackgroundGeolocation.getConfig(successFn, errorFn);
     }
 
     configure() {

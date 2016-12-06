@@ -71,10 +71,10 @@ const MainScene = React.createClass({
       this.setState({ isRunning: false });
     });
 
-    BackgroundGeolocation.on('authorizationChange', (authStatus) => {
-      console.log('[INFO] BackgroundGeolocation location auth. status: ' + authStatus);
-      if (authStatus === 2) {
-        Alert.alert('Location is disabled', 'Would you like to open location settings?', [
+    BackgroundGeolocation.on('authorization', (status) => {
+      console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+      if (status !== BackgroundGeolocation.auth.AUTHORIZED) {
+        Alert.alert('Location services are disabled', 'Would you like to open location settings?', [
           { text: 'Yes', onPress: () => BackgroundGeolocation.showLocationSettings() },
           { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
         ]);
@@ -141,12 +141,12 @@ const MainScene = React.createClass({
   },
 
   toggleTracking() {
-    BackgroundGeolocation.checkStatus(({ isRunning, locationServicesEnabled }) => {
+    BackgroundGeolocation.checkStatus(({ isRunning, authorization }) => {
       if (isRunning) {
         BackgroundGeolocation.stop();
         return false;
       }
-      if (locationServicesEnabled) {
+      if (authorization == BackgroundGeolocation.auth.AUTHORIZED) {
         // calling start will also ask user for permission if needed
         // permission error will be handled in permisision_denied event
         BackgroundGeolocation.start();
