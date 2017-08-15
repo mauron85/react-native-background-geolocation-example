@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react';
+import React, {Component} from 'react';
 import {Navigator} from 'react-native';
 import MainScene from '../common/scenes/MainScene';
 import MenuScene from '../common/scenes/MenuScene';

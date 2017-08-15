@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react';
+import React, {Component} from 'react';
 import { StyleSheet, InteractionManager, Alert, View } from 'react-native';
 import {Container, Header, Content, Footer, FooterTab, Title, List, ListItem, Text, Button, Icon} from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';

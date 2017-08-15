@@ -1,12 +1,13 @@
 'use strict';
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
   Alert,
   Dimensions,
 } from 'react-native';
+import createReactClass from 'create-react-class';
 import TimerMixin from 'react-timer-mixin';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
 import MapView from 'react-native-maps';
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MainScene = React.createClass({
+const MainScene = createReactClass({
   mixins: [TimerMixin],
 
   getInitialState() {
@@ -56,7 +57,9 @@ const MainScene = React.createClass({
       this.setState({ locations: locationsPast24Hours, region });
     };
 
-    BackgroundGeolocation.getValidLocations(handleHistoricLocations.bind(this), logError);
+    if (BackgroundGeolocation.getValidLocations) {
+      BackgroundGeolocation.getValidLocations(handleHistoricLocations.bind(this), logError);
+    }
 
     BackgroundGeolocation.on('start', () => {
       // service started successfully
@@ -189,7 +192,7 @@ const MainScene = React.createClass({
           })}
           </MapView>
         </View>
-        <Footer>
+        {/* <Footer>
             <FooterTab>
                 <Button> </Button>
                 <Button transparent onPress={this.toggleTracking}>
@@ -199,7 +202,7 @@ const MainScene = React.createClass({
                     <Icon name="ios-menu" />
                 </Button>
             </FooterTab>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }
