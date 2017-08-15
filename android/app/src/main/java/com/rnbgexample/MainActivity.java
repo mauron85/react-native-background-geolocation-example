@@ -1,4 +1,4 @@
-package com.marianhello.RNBGExample;
+package com.rnbgexample;
 
 import com.facebook.react.ReactActivity;
 
