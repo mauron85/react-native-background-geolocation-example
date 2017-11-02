@@ -7,12 +7,6 @@
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 
-import App from './src/android/App';
+import App from './src/app';
 
-class RNBGExample extends Component {
-  render() {
-    return ( <App /> );
-  }
-}
-
-AppRegistry.registerComponent('RNBGExample', () => RNBGExample);
+AppRegistry.registerComponent('RNBGExample', () => App);

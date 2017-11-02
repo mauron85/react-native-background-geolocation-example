@@ -1,44 +1,56 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { StyleSheet, View, Alert, Dimensions } from 'react-native';
 import {
-  StyleSheet,
-  View,
-  Alert,
-  Dimensions,
-} from 'react-native';
-import createReactClass from 'create-react-class';
-import TimerMixin from 'react-timer-mixin';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Icon } from 'native-base';
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Icon
+} from 'native-base';
 import MapView from 'react-native-maps';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import TrackingDot from '../res/TrackingDot.png';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
+  icon: {
+    color: '#fff',
+    fontSize: 30
+  }
 });
 
-const MainScene = createReactClass({
-  mixins: [TimerMixin],
+class MainScene extends Component {
+  static navigationOptions = {
+    header: null
+  }
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       region: null,
       locations: [],
       stationaries: [],
       isRunning: false
     };
-  },
+
+    this.goToSettings = this.goToSettings.bind(this);
+  }
 
   componentDidMount() {
     console.log('map did mount');
 
-    function logError (msg) {
+    function logError(msg) {
       console.log(`[ERROR] getLocations: ${msg}`);
     }
 
-    const handleHistoricLocations = (locations) => {
+    const handleHistoricLocations = locations => {
       let region = null;
       const now = Date.now();
       const latitudeDelta = 0.01;
@@ -46,19 +58,26 @@ const MainScene = createReactClass({
       const durationOfDayInMillis = 24 * 3600 * 1000;
 
       const locationsPast24Hours = locations.filter(location => {
-        return (now - location.time) <= durationOfDayInMillis;
+        return now - location.time <= durationOfDayInMillis;
       });
 
       if (locationsPast24Hours.length > 0) {
         // asume locations are already sorted
-        const lastLocation = locationsPast24Hours[locationsPast24Hours.length - 1];
-        region = Object.assign({}, lastLocation, { latitudeDelta, longitudeDelta });
+        const lastLocation =
+          locationsPast24Hours[locationsPast24Hours.length - 1];
+        region = Object.assign({}, lastLocation, {
+          latitudeDelta,
+          longitudeDelta
+        });
       }
       this.setState({ locations: locationsPast24Hours, region });
     };
 
     if (BackgroundGeolocation.getValidLocations) {
-      BackgroundGeolocation.getValidLocations(handleHistoricLocations.bind(this), logError);
+      BackgroundGeolocation.getValidLocations(
+        handleHistoricLocations.bind(this),
+        logError
+      );
     }
 
     BackgroundGeolocation.on('start', () => {
@@ -74,13 +93,26 @@ const MainScene = createReactClass({
       this.setState({ isRunning: false });
     });
 
-    BackgroundGeolocation.on('authorization', (status) => {
-      console.log('[INFO] BackgroundGeolocation authorization status: ' + status);
+    BackgroundGeolocation.on('authorization', status => {
+      console.log(
+        '[INFO] BackgroundGeolocation authorization status: ' + status
+      );
       if (status !== BackgroundGeolocation.auth.AUTHORIZED) {
-        Alert.alert('Location services are disabled', 'Would you like to open location settings?', [
-          { text: 'Yes', onPress: () => BackgroundGeolocation.showLocationSettings() },
-          { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
-        ]);
+        Alert.alert(
+          'Location services are disabled',
+          'Would you like to open location settings?',
+          [
+            {
+              text: 'Yes',
+              onPress: () => BackgroundGeolocation.showLocationSettings()
+            },
+            {
+              text: 'No',
+              onPress: () => console.log('No Pressed'),
+              style: 'cancel'
+            }
+          ]
+        );
       }
     });
 
@@ -88,19 +120,25 @@ const MainScene = createReactClass({
       Alert.alert('BackgroundGeolocation error', message);
     });
 
-    BackgroundGeolocation.on('location', (location) => {
+    BackgroundGeolocation.on('location', location => {
       console.log('[DEBUG] BackgroundGeolocation location', location);
       BackgroundGeolocation.startTask(taskKey => {
-        this.requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
           const longitudeDelta = 0.01;
           const latitudeDelta = 0.01;
           if (location.radius) {
-            const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
+            const region = Object.assign({}, location, {
+              latitudeDelta,
+              longitudeDelta
+            });
             const stationaries = this.state.stationaries.slice(0);
             stationaries.push(location);
             this.setState({ stationaries, region });
           } else {
-            const region = Object.assign({}, location, { latitudeDelta, longitudeDelta });
+            const region = Object.assign({}, location, {
+              latitudeDelta,
+              longitudeDelta
+            });
             const locations = this.state.locations.slice(0);
             locations.push(location);
             this.setState({ locations, region });
@@ -113,7 +151,7 @@ const MainScene = createReactClass({
     // BackgroundGeolocation.on('stationary', (stationary) => {
     //   console.log('[DEBUG] BackgroundGeolocation stationary', stationary);
     //   BackgroundGeolocation.startTask(taskKey => {
-    //     this.requestAnimationFrame(() => {
+    //     requestAnimationFrame(() => {
     //       const stationaries = this.state.stationaries.slice(0);
     //       stationaries.push(stationary);
     //       this.setState({ stationaries });
@@ -133,15 +171,17 @@ const MainScene = createReactClass({
     BackgroundGeolocation.checkStatus(({ isRunning }) => {
       this.setState({ isRunning });
     });
-  },
+  }
 
   componentWillUnmount() {
-    BackgroundGeolocation.events.forEach(event => BackgroundGeolocation.removeAllListeners(event));
-  },
+    BackgroundGeolocation.events.forEach(event =>
+      BackgroundGeolocation.removeAllListeners(event)
+    );
+  }
 
-  goToSettings(visible) {
-    this.props.navigator.replace({ name: 'Menu' });
-  },
+  goToSettings() {
+    this.props.navigation.navigate('Menu');
+  }
 
   toggleTracking() {
     BackgroundGeolocation.checkStatus(({ isRunning, authorization }) => {
@@ -155,57 +195,64 @@ const MainScene = createReactClass({
         BackgroundGeolocation.start();
       } else {
         // Location services are disabled
-        Alert.alert('Location services disabled', 'Would you like to open location settings?', [
-          { text: 'Yes', onPress: () => BackgroundGeolocation.showLocationSettings() },
-          { text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel' }
-        ]);
+        Alert.alert(
+          'Location services disabled',
+          'Would you like to open location settings?',
+          [
+            {
+              text: 'Yes',
+              onPress: () => BackgroundGeolocation.showLocationSettings()
+            },
+            {
+              text: 'No',
+              onPress: () => console.log('No Pressed'),
+              style: 'cancel'
+            }
+          ]
+        );
       }
     });
-  },
+  }
 
   render() {
     const { height, width } = Dimensions.get('window');
     const { locations, stationaries, region, isRunning } = this.state;
     return (
       <Container>
-        <View style={styles.container}>
-          <MapView
-            style={{ width, flex: 1 }}
-            region={region}
-          >
-          {locations.map((location, idx) => (
-            <MapView.Marker
-              key={idx}
-              coordinate={location}
-              image={require('../../res/TrackingDot.png')}
-            />
-          ))}
-          {stationaries.map((stationary, idx) => {
-            return (
-              <MapView.Circle
+        <Content>
+          <MapView style={{ width, height }} region={region}>
+            {locations.map((location, idx) => (
+              <MapView.Marker
                 key={idx}
-                center={stationary}
-                radius={stationary.radius}
-                fillColor="#AAA"
+                coordinate={location}
+                image={TrackingDot}
               />
-            );
-          })}
+            ))}
+            {stationaries.map((stationary, idx) => {
+              return (
+                <MapView.Circle
+                  key={idx}
+                  center={stationary}
+                  radius={stationary.radius}
+                  fillColor="#AAA"
+                />
+              );
+            })}
           </MapView>
-        </View>
-        {/* <Footer>
-            <FooterTab>
-                <Button> </Button>
-                <Button transparent onPress={this.toggleTracking}>
-                    <Icon name={isRunning ? 'ios-pause' : 'ios-play'} />
-                </Button>
-                <Button transparent onPress={this.goToSettings}>
-                    <Icon name="ios-menu" />
-                </Button>
-            </FooterTab>
-        </Footer> */}
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button transparent onPress={this.toggleTracking}>
+              <Icon name={isRunning ? 'pause' : 'play'} style={styles.icon} />
+            </Button>
+            <Button transparent onPress={this.goToSettings}>
+              <Icon name="menu" style={styles.icon} />
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
   }
-});
+}
 
 export default MainScene;
