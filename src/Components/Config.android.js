@@ -18,8 +18,9 @@ import {
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import CommonConfig from './Config.common';
+import { i18n } from '../i18n';
 
-const providers = [
+export const providers = [
   {
     label: 'Distance Filter',
     value: String(
@@ -48,7 +49,6 @@ class ConfigScene extends Component {
     super(props);
     this.onPress = this.onPress.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onChangeNumber = this.onChangeNumber.bind(this);
   }
 
   onPress(key) {
@@ -56,11 +56,7 @@ class ConfigScene extends Component {
   }
 
   onChange(val, key) {
-    this.props.onChange(val, key);
-  }
-
-  onChangeNumber(val, key) {
-    this.props.onChangeNumber(val, key);
+    this.props.onChange(key, val);
   }
 
   render() {
@@ -83,68 +79,43 @@ class ConfigScene extends Component {
           </ListItem>
           <ListItem onPress={() => this.onPress('interval')}>
             <Body>
-              <Text>Interval</Text>
+              <Text>{i18n.interval}</Text>
+              <Text note>{interval} [ms]</Text>
             </Body>
             <Right>
-              <Text>{interval}</Text>
               <Icon name="arrow-forward" />
-              {/* <Input
-              keyboardType="numeric"
-              value={interval}
-              onChangeText={val => this.onChangeNumber(val, 'interval')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem onPress={() => this.onPress('fastestInterval')}>
             <Body>
-              <Text>Fast. Interval</Text>
+              <Text>{i18n.fastestInterval}</Text>
+              <Text note>{fastestInterval} [ms]</Text>
             </Body>
             <Right>
-              <Text>{fastestInterval}</Text>
               <Icon name="arrow-forward" />
-
-              {/* <Input
-              keyboardType="numeric"
-              value={fastestInterval}
-              onChangeText={val => this.onChangeNumber(val, 'fastestInterval')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem onPress={() => this.onPress('activitiesInterval')}>
             <Body>
-              <Text>Activ. Interval</Text>
+              <Text>{i18n.activitiesInterval}</Text>
+              <Text note>{activitiesInterval} [ms]</Text>
             </Body>
             <Right>
-              <Text>{activitiesInterval}</Text>
               <Icon name="arrow-forward" />
-              {/* <Input
-              keyboardType="numeric"
-              value={activitiesInterval}
-              onChangeText={val =>
-                this.onChangeNumber(val, 'activitiesInterval')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem onPress={() => this.onPress('locationProvider')}>
             <Body>
-              <Text>Location Provider</Text>
+              <Text>{i18n.locationProvider}</Text>
+              <Text note>{providers[locationProvider].label}</Text>
             </Body>
-            <Right>           
-              <Text>{locationProvider}</Text>
+            <Right>
               <Icon name="arrow-forward" />
-              {/* <Picker
-              label="Location Provider"
-              iosHeader="Select one"
-              mode="dropdown"
-              items={providers}
-              selectedItem={String(locationProvider || 0)}
-              onItemChange={val => this.onChangeNumber(val, 'locationProvider')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem>
             <Body>
-              <Text>Start On Boot</Text>
+              <Text>{i18n.startOnBoot}</Text>
             </Body>
             <Right>
               <Switch
@@ -158,44 +129,29 @@ class ConfigScene extends Component {
           </ListItem>
           <ListItem onPress={() => this.onPress('notificationTitle')}>
             <Body>
-              <Text>Title</Text>
+              <Text>{i18n.notificationTitle}</Text>
+              <Text note>{notificationTitle}</Text>
             </Body>
             <Right>
-              <Text>{notificationTitle}</Text>
               <Icon name="arrow-forward" />
-
-              {/* <Input
-              value={notificationTitle}
-              onChangeText={val => this.onChange(val, 'notificationTitle')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem onPress={() => this.onPress('notificationText')}>
             <Body>
-              <Text>Text</Text>
+              <Text>{i18n.notificationText}</Text>
+              <Text note>{notificationText}</Text>
             </Body>
             <Right>
-              <Text>{notificationText}</Text>
               <Icon name="arrow-forward" />
-
-              {/* <Input
-              value={notificationText}
-              onChangeText={val => this.onChange(val, 'notificationText')}
-            /> */}
             </Right>
           </ListItem>
           <ListItem onPress={() => this.onPress('notificationIconColor')}>
             <Body>
-              <Text>Color</Text>
+              <Text>{i18n.notificationIconColor}</Text>
+              <Text note>{notificationIconColor}</Text>
             </Body>
             <Right>
-              <Text>{notificationIconColor}</Text>
               <Icon name="arrow-forward" />
-
-              {/* <Input
-              value={notificationIconColor}
-              onChangeText={val => this.onChange(val, 'notificationIconColor')}
-            /> */}
             </Right>
           </ListItem>
         </List>

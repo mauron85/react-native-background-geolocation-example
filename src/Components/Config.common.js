@@ -16,6 +16,7 @@ import {
   List,
   ListItem
 } from 'native-base';
+import { i18n } from '../i18n';
 
 class ConfigScene extends Component {
   static defaultProps = {
@@ -36,7 +37,6 @@ class ConfigScene extends Component {
     super(props);
     this.onPress = this.onPress.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onChangeNumber = this.onChangeNumber.bind(this);
   }
 
   onPress(key) {
@@ -44,11 +44,7 @@ class ConfigScene extends Component {
   }
 
   onChange(val, key) {
-    this.props.onChange(val, key);
-  }
-
-  onChangeNumber(val, key) {
-    this.props.onChangeNumber(val, key);
+    this.props.onChange(key, val);
   }
 
   render() {
@@ -72,63 +68,34 @@ class ConfigScene extends Component {
         </ListItem>
         <ListItem onPress={() => this.onPress('desiredAccuracy')}>
           <Body>
-            <Text>Desired Accuracy</Text>
+            <Text>{i18n.desiredAccuracy}</Text>
+            <Text note>{desiredAccuracy} [meters]</Text>
           </Body>
           <Right>
-            <Text>{desiredAccuracy}</Text>
             <Icon name="arrow-forward" />
           </Right>
-          {/* <InputGroup>
-            <Input
-              inlineLabel
-              keyboardType="numeric"
-              label="Desired Accuracy"
-              value={config.desiredAccuracy}
-              onChangeText={val => this.onChangeNumber(val, 'desiredAccuracy')}
-            />
-          </InputGroup> */}
         </ListItem>
         <ListItem onPress={() => this.onPress('stationaryRadius')}>
           <Body>
-            <Text>Stationary Radius</Text>
+            <Text>{i18n.stationaryRadius}</Text>
+            <Text note>{stationaryRadius} [meters]</Text>
           </Body>
           <Right>
-            <Text>{stationaryRadius}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              keyboardType="numeric"
-              inlineLabel
-              label="Stationary Radius"
-              value={config.stationaryRadius}
-              onChangeText={val => this.onChangeNumber(val, 'stationaryRadius')}
-            />
-          </InputGroup> */}
         </ListItem>
         <ListItem onPress={() => this.onPress('distanceFilter')}>
           <Body>
-            <Text>Distance Filter</Text>
+            <Text>{i18n.distanceFilter}</Text>
+            <Text note>{distanceFilter} [meters]</Text>
           </Body>
           <Right>
-            <Text>{distanceFilter}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              keyboardType="numeric"
-              inlineLabel
-              label="Distance Filter"
-              value={config.distanceFilter}
-              onChangeText={val => this.onChangeNumber(val, 'distanceFilter')}
-            />
-          </InputGroup> */}
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Debug</Text>
+            <Text>{i18n.debug}</Text>
           </Body>
           <Right>
             <Switch
@@ -139,7 +106,7 @@ class ConfigScene extends Component {
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Start Foreground</Text>
+            <Text>{i18n.startForeground}</Text>
           </Body>
           <Right>
             <Switch
@@ -150,7 +117,7 @@ class ConfigScene extends Component {
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Stop On Still</Text>
+            <Text>{i18n.stopOnStillActivity}</Text>
           </Body>
           <Right>
             <Switch
@@ -161,7 +128,7 @@ class ConfigScene extends Component {
         </ListItem>
         <ListItem>
           <Body>
-            <Text>Stop On Terminate</Text>
+            <Text>{i18n.stopOnTerminate}</Text>
           </Body>
           <Right>
             <Switch
@@ -173,79 +140,41 @@ class ConfigScene extends Component {
         <ListItem itemDivider>
           <Text>Location sync</Text>
         </ListItem>
-        <ListItem onPress={() => this.onPress('interval')}>
+        <ListItem onPress={() => this.onPress('maxLocations')}>
           <Body>
-            <Text>Max. Locations</Text>
+            <Text>{i18n.maxLocations}</Text>
+            <Text note>{maxLocations}</Text>
           </Body>
           <Right>
-            <Text>{maxLocations}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              inlineLabel
-              keyboardType="numeric"
-              label="Max. Locations"
-              value={config.maxLocations}
-              onChangeText={val => this.onChangeNumber(val, 'maxLocations')}
-            />
-          </InputGroup> */}
         </ListItem>
-        <ListItem onPress={() => this.onPress('interval')}>
+        <ListItem onPress={() => this.onPress('url')}>
           <Body>
-            <Text>Post url.</Text>
+            <Text>{i18n.url}</Text>
+            <Text note>{url}</Text>
           </Body>
           <Right>
-            <Text>{url}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              inlineLabel
-              label="Post url."
-              value={config.url || 'http://'}
-              onChangeText={val => this.onChange(val, 'url')}
-            />
-          </InputGroup> */}
         </ListItem>
-        <ListItem onPress={() => this.onPress('interval')}>
+        <ListItem onPress={() => this.onPress('syncUrl')}>
           <Body>
-            <Text>Sync url.</Text>
+            <Text>{i18n.syncUrl}</Text>
+            <Text note>{syncUrl}</Text>
           </Body>
           <Right>
-            <Text>{syncUrl}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              inlineLabel
-              label="Sync url."
-              value={config.syncUrl || 'http://'}
-              onChangeText={val => this.onChange(val, 'syncUrl')}
-            />
-          </InputGroup> */}
         </ListItem>
-        <ListItem onPress={() => this.onPress('interval')}>
+        <ListItem onPress={() => this.onPress('syncThreshold')}>
           <Body>
-            <Text>Sync. Threshold</Text>
+            <Text>{i18n.syncThreshold}</Text>
+            <Text note>{syncThreshold}</Text>
           </Body>
           <Right>
-            <Text>{syncThreshold}</Text>
             <Icon name="arrow-forward" />
           </Right>
-
-          {/* <InputGroup>
-            <Input
-              inlineLabel
-              keyboardType="numeric"
-              label="Sync. Threshold"
-              value={config.syncThreshold}
-              onChangeText={val => this.onChangeNumber(val, 'syncThreshold')}
-            />
-          </InputGroup> */}
         </ListItem>
       </List>
     );
