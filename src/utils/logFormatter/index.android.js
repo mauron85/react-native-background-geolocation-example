@@ -13,6 +13,7 @@ export default function androidLogFormatter(logEntries) {
     var dateStr = [d.getFullYear(), padLeft(d.getMonth()+1,2), padLeft(d.getDate(),2)].join('/');
     var timeStr = [padLeft(d.getHours(),2), padLeft(d.getMinutes(),2), padLeft(d.getSeconds(),2)].join(':');
     return {
+      id: logEntry.timestamp,
       style: STYLES[logEntry.level],
       text: ['[', dateStr, ' ', timeStr, ']\t', logEntry.message].join('')
     };

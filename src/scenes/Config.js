@@ -65,6 +65,7 @@ class ConfigScene extends PureComponent {
   }
 
   onChange(key, value) {
+    console.log(key, value);
     const config = { ...this.state.config };
     config[key] = value;
     this.setState({ config });

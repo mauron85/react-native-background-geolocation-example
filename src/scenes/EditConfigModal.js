@@ -9,6 +9,7 @@ import {
   Title,
   Content,
   Form,
+  Item,
   Button,
   Icon,
   Picker,
@@ -19,8 +20,9 @@ import { providers } from '../Components/Config.android';
 import { i18n } from '../i18n';
 
 const styles = {
-  form: {
-    backgroundColor: '#ccc'
+  content: {
+    padding: 10,
+    backgroundColor: '#fff'
   }
 };
 
@@ -28,7 +30,7 @@ const configPropTypes = {
   desiredAccuracy: {
     type: 'number',
     units: 'meters',
-    step: 10,
+    step: 5,
     minimumValue: 0,
     maximumValue: 100,
     multiplier: 1
@@ -38,7 +40,7 @@ const configPropTypes = {
     units: 'meters',
     step: 1,
     minimumValue: 0,
-    maximumValue: 10000,
+    maximumValue: 250,
     multiplier: 1
   },
   distanceFilter: {
@@ -46,7 +48,7 @@ const configPropTypes = {
     units: 'meters',
     step: 1,
     minimumValue: 0,
-    maximumValue: 10000,
+    maximumValue: 1000,
     multiplier: 1
   },
   maxLocations: {
@@ -163,12 +165,11 @@ export default class ModalExample extends PureComponent {
             </Body>
             <Right />
           </Header>
-          <Content>
+          <Content style={styles.content}>
             <Text>{i18n[configProp]}</Text>
             {(() => {
               const configPropType = configPropTypes[configProp] || {};
               const type = configPropType.type || configPropType;
-              console.log(configPropType.items);
               switch (type) {
                 case 'number':
                   const { multiplier, units = '' } = configPropType;
@@ -182,7 +183,7 @@ export default class ModalExample extends PureComponent {
                         value={configProp !== null && configValue / multiplier}
                         onSlidingComplete={val =>
                           this.props.onChange(configProp, val * multiplier)}
-                        onValueChange={this.onChange}
+                        onValueChange={val => this.onChange(val * multiplier)}
                       />
                     </View>
                   );
@@ -202,10 +203,12 @@ export default class ModalExample extends PureComponent {
                   );
                 default:
                   return (
+                    <Item>
                     <Input
                       value={String(configValue || '')}
                       onChangeText={val => this.props.onChange(configProp, val)}
                     />
+                    </Item>
                   );
               }
             })()}

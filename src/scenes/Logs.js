@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, FlatList } from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +13,7 @@ import {
   Text,
   Button,
   Icon,
-  Spinner,
+  Spinner
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import logFormatter from '../utils/logFormatter';
@@ -27,35 +27,49 @@ class LogsScene extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      logEntries: null
+      isRefreshing: false,
+      logEntries: []
     };
+    this.refresh = this.refresh.bind(this);
   }
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      BackgroundGeolocation.getLogEntries(100, logEntries => {
-        this.setState({ logEntries: logFormatter(logEntries) });
+      this.refresh();
+    });
+  }
+
+  refresh() {
+    this.setState({ isRefreshing: true });
+    BackgroundGeolocation.getLogEntries(100, logEntries => {
+      this.setState({
+        isRefreshing: false,
+        logEntries: logFormatter(logEntries)
       });
     });
   }
 
+  _keyExtractor = (item, index) => item.id;
+
   renderContent(logEntries) {
     return (
-      <List style={{ flex: 1, backgroundColor: '#fff' }}
-        dataArray={logEntries}
-        renderRow={entry => (
+      <FlatList
+        style={{ flex: 1, backgroundColor: '#fff' }}
+        data={logEntries}
+        keyExtractor={this._keyExtractor}
+        renderItem={({ item }) => (
           <ListItem
             style={{
               marginLeft: 2,
-              backgroundColor: entry.style.backgroundColor
+              backgroundColor: item.style.backgroundColor
             }}
           >
             <Text
               style={{
-                color: entry.style.color
+                color: item.style.color
               }}
             >
-              {entry.text}
+              {item.text}
             </Text>
           </ListItem>
         )}
@@ -64,7 +78,7 @@ class LogsScene extends PureComponent {
   }
 
   render() {
-    const logEntries = this.state.logEntries;
+    const { logEntries, isRefreshing } = this.state;
     return (
       <Container>
         <Header>
@@ -76,12 +90,18 @@ class LogsScene extends PureComponent {
           <Body>
             <Title>Logs</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={this.refresh}>
+              <Icon name="refresh" />
+            </Button>
+          </Right>
         </Header>
         <Content>
           {(() => {
-            if (logEntries) return this.renderContent(logEntries);
-            return <Spinner />;
+            if (isRefreshing) {
+              return <Spinner />;
+            }
+            return this.renderContent(logEntries);
           })()}
         </Content>
       </Container>
