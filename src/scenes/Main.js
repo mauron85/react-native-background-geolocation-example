@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View, Alert, Dimensions } from 'react-native';
 import {
   Container,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class MainScene extends Component {
+class MainScene extends PureComponent {
   static navigationOptions = {
     header: null
   }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Container,
@@ -6,12 +6,13 @@ import {
   Title,
   Content,
   Left,
+  Right,
   Body,
   Button,
   Icon,
   List,
   ListItem,
-  Text
+  Text  
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 
@@ -21,9 +22,10 @@ const styles = StyleSheet.create({
   }
 });
 
-class SettingsScene extends Component {
+class SettingsScene extends PureComponent {
   static navigationOptions = {
-    title: 'Menu'
+    title: 'Menu',
+    header: null
   };
 
   navigate(scene) {
@@ -33,6 +35,17 @@ class SettingsScene extends Component {
   render() {
     return (
       <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Menu</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           <List>
             <ListItem icon onPress={() => this.navigate('Logs')}>

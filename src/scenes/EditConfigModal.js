@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal, Slider, View } from 'react-native';
 import {
   Container,
@@ -99,7 +99,7 @@ const configPropTypes = {
   notificationIconColor: 'string'
 };
 
-export default class ModalExample extends Component {
+export default class ModalExample extends PureComponent {
   render() {
     const { visible, configProp, configValue, onClose } = this.props;
 

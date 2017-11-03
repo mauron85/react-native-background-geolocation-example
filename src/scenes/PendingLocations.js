@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, InteractionManager, Alert, View } from 'react-native';
 import {
   Container,
@@ -54,9 +54,10 @@ const LogItem = ({
   );
 };
 
-class PendingLocationsScene extends Component {
+class PendingLocationsScene extends PureComponent {
   static navigationOptions = {
-    title: 'Pending Locations'
+    title: 'Pending Locations',
+    header: null,
   };
 
   constructor(props) {
@@ -134,6 +135,17 @@ class PendingLocationsScene extends Component {
     const { selectedLocationId, locations } = this.state;
     return (
       <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Pending Locations</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           {(() => {
             if (locations)

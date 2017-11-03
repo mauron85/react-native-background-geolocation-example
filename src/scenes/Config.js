@@ -1,13 +1,25 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { InteractionManager, View, Text } from 'react-native';
-import { Container, Content, Spinner } from 'native-base';
+import {
+  Container,
+  Header,
+  Left,
+  Right,
+  Body,
+  Title,
+  Content,
+  Button,
+  Spinner,
+  Icon
+} from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import Config from '../Components/Config';
 import Modal from './EditConfigModal';
 
-class ConfigScene extends Component {
+class ConfigScene extends PureComponent {
   static navigationOptions = {
-    title: 'Configuration'
+    title: 'Configuration',
+    header: null
   };
 
   constructor(props) {
@@ -69,6 +81,17 @@ class ConfigScene extends Component {
     const { config, error, isReady, isEditing, editConfigProp } = this.state;
     return (
       <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Configuration</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           {(() => {
             if (!isReady) {

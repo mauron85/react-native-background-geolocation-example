@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { InteractionManager } from 'react-native';
 import {
   Container,
   Header,
+  Right,
+  Left,
   Content,
+  Body,
   Title,
   List,
   ListItem,
@@ -15,9 +18,10 @@ import {
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import logFormatter from '../utils/logFormatter';
 
-class LogsScene extends Component {
+class LogsScene extends PureComponent {
   static navigationOptions = {
-    title: 'Logs'
+    title: 'Logs',
+    header: null
   };
 
   constructor(props) {
@@ -62,6 +66,17 @@ class LogsScene extends Component {
     const logEntries = this.state.logEntries;
     return (
       <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Logs</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           {(() => {
             if (logEntries) return this.renderContent(logEntries);
