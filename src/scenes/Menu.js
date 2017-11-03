@@ -47,7 +47,7 @@ class SettingsScene extends PureComponent {
           <Right />
         </Header>
         <Content>
-          <List>
+          <List style={{ flex: 1, backgroundColor: '#fff' }}>
             <ListItem icon onPress={() => this.navigate('Logs')}>
               <Left>
                 <Icon name="ios-archive" style={styles.iconStyle} />

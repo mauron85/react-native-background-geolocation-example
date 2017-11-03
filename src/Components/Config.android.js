@@ -73,7 +73,7 @@ class ConfigScene extends Component {
     return (
       <View>
         <CommonConfig {...this.props} />
-        <List>
+        <List style={{ flex: 1, backgroundColor: '#fff' }}>
           <ListItem itemDivider>
             <Text>Android</Text>
           </ListItem>

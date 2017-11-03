@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, InteractionManager, Alert, View } from 'react-native';
+import { StyleSheet, InteractionManager, Alert, View, FlatList } from 'react-native';
 import {
   Container,
   Header,
@@ -36,13 +36,13 @@ const LogItem = ({
   const date = new Date(time);
   return (
     <ListItem onPress={() => onPress(locationId)}>
-      <Left>
-        <Text>{`${locationId}`}</Text>
-      </Left>
+      <Text>{`${locationId}`}</Text>
       <Body>
+        <View>
         <Text>{`lat: ${latitude}`}</Text>
         <Text>{`lon: ${longitude}`}</Text>
         <Text>{`time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</Text>
+        </View>
       </Body>
       <Right>
         <Icon
@@ -62,7 +62,7 @@ class PendingLocationsScene extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = { locations: null, selectedLocationId: -1 };
+    this.state = { locations: null, selectedLocationId: -1, isReady: false };
     this.onLocationSelected = this.onLocationSelected.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -75,9 +75,9 @@ class PendingLocationsScene extends PureComponent {
   }
 
   refresh() {
-    this.setState({ selectedLocationId: -1 });
+    this.setState({ selectedLocationId: -1, isReady: false });
     BackgroundGeolocation.getValidLocations(locations => {
-      this.setState({ locations });
+      this.setState({ locations, isReady: true });
     });
   }
 
@@ -111,28 +111,10 @@ class PendingLocationsScene extends PureComponent {
     }
   }
 
-  renderContent(locations, selectedLocationId) {
-    return (
-      <List
-        dataArray={locations}
-        renderRow={loc => {
-          const date = new Date(loc.time);
-          const selected = selectedLocationId === loc.locationId;
-          return (
-            <LogItem
-              key={loc.locationId}
-              {...loc}
-              selected={selected}
-              onPress={this.onLocationSelected}
-            />
-          );
-        }}
-      />
-    );
-  }
+  _keyExtractor = (item, index) => item.locationId;
 
   render() {
-    const { selectedLocationId, locations } = this.state;
+    const { selectedLocationId, locations, isReady } = this.state;
     return (
       <Container>
         <Header>
@@ -148,9 +130,26 @@ class PendingLocationsScene extends PureComponent {
         </Header>
         <Content>
           {(() => {
-            if (locations)
-              return this.renderContent(locations, selectedLocationId);
-            return <Spinner />;
+            if (!isReady) {
+              return <Spinner />;
+            }
+            return (
+              <FlatList style={{ flex: 1, backgroundColor: '#fff' }}
+                data={locations}
+                keyExtractor={this._keyExtractor}
+                renderItem={({ item }) => {
+                  const date = new Date(item.time);
+                  const selected = selectedLocationId === item.locationId;
+                  return (
+                    <LogItem
+                      {...item}
+                      selected={selected}
+                      onPress={this.onLocationSelected}
+                    />
+                  );
+                }}
+              />
+            );
           })()}
         </Content>
         <Footer>

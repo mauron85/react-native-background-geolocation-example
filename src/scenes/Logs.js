@@ -41,11 +41,12 @@ class LogsScene extends PureComponent {
 
   renderContent(logEntries) {
     return (
-      <List
+      <List style={{ flex: 1, backgroundColor: '#fff' }}
         dataArray={logEntries}
         renderRow={entry => (
           <ListItem
             style={{
+              marginLeft: 2,
               backgroundColor: entry.style.backgroundColor
             }}
           >

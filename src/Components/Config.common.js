@@ -62,7 +62,7 @@ class ConfigScene extends Component {
       syncThreshold
     } = this.props;
     return (
-      <List>
+      <List style={{ flex: 1, backgroundColor: '#fff' }}>
         <ListItem itemDivider>
           <Text>General</Text>
         </ListItem>
