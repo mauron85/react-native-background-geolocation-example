@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Slider, View } from 'react-native';
+import { Modal, Slider as NativeSlider, View } from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +13,7 @@ import {
   Icon,
   Picker,
   Text,
-  Input,
+  Input
 } from 'native-base';
 import { providers } from '../Components/Config.android';
 import { i18n } from '../i18n';
@@ -99,18 +99,57 @@ const configPropTypes = {
   notificationIconColor: 'string'
 };
 
+class Slider extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { value: props.value };
+  }
+
+  componentWillReceiveProps(props) {
+    if (!this.state.value) {
+      this.setState({ value: props.value });
+    }
+  }
+
+  render() {
+    return (
+      <NativeSlider
+        {...this.props}
+        value={this.state.value}
+      />
+    );
+  }
+}
+
 export default class ModalExample extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { value: props.configValue };
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({ value: this.props.configValue });
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({ value: props.configValue });
+  }
+
+  onChange(value) {
+    this.setState({ value });
+  }
+
   render() {
     const { visible, configProp, configValue, onClose } = this.props;
+    const { value } = this.state;
 
     return (
       <Modal
         transparent={false}
         animationType="slide"
         visible={visible}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-        }}
+        onRequestClose={() => {}}
       >
         <Container style={styles.container}>
           <Header>
@@ -135,12 +174,15 @@ export default class ModalExample extends PureComponent {
                   const { multiplier, units = '' } = configPropType;
                   return (
                     <View>
-                      <Text>{configValue / multiplier} {units}</Text>
+                      <Text>
+                        {value / multiplier} {units}
+                      </Text>
                       <Slider
                         {...configPropType}
-                        value={configValue / multiplier}
-                        onValueChange={val =>
+                        value={configProp !== null && configValue / multiplier}
+                        onSlidingComplete={val =>
                           this.props.onChange(configProp, val * multiplier)}
+                        onValueChange={this.onChange}
                       />
                     </View>
                   );
@@ -150,7 +192,8 @@ export default class ModalExample extends PureComponent {
                       mode="dropdown"
                       placeholder="Select One"
                       selectedValue={String(configValue)}
-                      onValueChange={val => this.props.onChange(configProp, Number(val))}
+                      onValueChange={val =>
+                        this.props.onChange(configProp, Number(val))}
                     >
                       {configPropType.items.map(({ label, value }) => (
                         <Picker.Item key={value} label={label} value={value} />
