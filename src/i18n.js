@@ -18,5 +18,8 @@ export const i18n = {
   startOnBoot: 'Start On Boot',
   notificationTitle: 'Title',
   notificationText: 'Text',
-  notificationIconColor: 'Color'
+  notificationIconColor: 'Color',
+  // iOS
+  activityType: 'Activity',
+  saveBatteryOnBackground: 'Save battery'
 };

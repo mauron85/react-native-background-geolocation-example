@@ -17,6 +17,7 @@ import {
   Input
 } from 'native-base';
 import { providers } from '../Components/Config.android';
+import { activities } from '../Components/Config.ios';
 import { i18n } from '../i18n';
 
 const styles = {
@@ -94,11 +95,17 @@ const configPropTypes = {
   },
   locationProvider: {
     type: 'enum',
-    items: providers
+    items: providers,
+    formatter: (val) => Number(val)
   },
   notificationTitle: 'string',
   notificationText: 'string',
-  notificationIconColor: 'string'
+  notificationIconColor: 'string',
+  // iOS
+  activityType: {
+    type: 'enum',
+    items: activities
+  }
 };
 
 class Slider extends PureComponent {
@@ -188,13 +195,14 @@ export default class ModalExample extends PureComponent {
                     </View>
                   );
                 case 'enum':
+                  const formatter = configPropType.formatter;
                   return (
                     <Picker
                       mode="dropdown"
                       placeholder="Select One"
                       selectedValue={String(configValue)}
                       onValueChange={val =>
-                        this.props.onChange(configProp, Number(val))}
+                        this.props.onChange(configProp, formatter ? formatter(val) : val)}
                     >
                       {configPropType.items.map(({ label, value }) => (
                         <Picker.Item key={value} label={label} value={value} />

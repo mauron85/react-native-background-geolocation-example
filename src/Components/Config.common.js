@@ -18,7 +18,7 @@ import {
 } from 'native-base';
 import { i18n } from '../i18n';
 
-class ConfigScene extends Component {
+class Config extends Component {
   static defaultProps = {
     desiredAccuracy: 0,
     stationaryRadius: 0,
@@ -181,4 +181,4 @@ class ConfigScene extends Component {
   }
 }
 
-export default ConfigScene;
+export default Config;

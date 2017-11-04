@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  footer: {
+    backgroundColor: '#0C68FB',
+  },
   icon: {
     color: '#fff',
     fontSize: 30
@@ -73,12 +76,10 @@ class MainScene extends PureComponent {
       this.setState({ locations: locationsPast24Hours, region });
     };
 
-    if (BackgroundGeolocation.getValidLocations) {
-      BackgroundGeolocation.getValidLocations(
-        handleHistoricLocations.bind(this),
-        logError
-      );
-    }
+    BackgroundGeolocation.getValidLocations(
+      handleHistoricLocations.bind(this),
+      logError
+    );
 
     BackgroundGeolocation.on('start', () => {
       // service started successfully
@@ -240,12 +241,12 @@ class MainScene extends PureComponent {
             })}
           </MapView>
         </Content>
-        <Footer>
+        <Footer style={styles.footer}>
           <FooterTab>
-            <Button transparent onPress={this.toggleTracking}>
+            <Button onPress={this.toggleTracking}>
               <Icon name={isRunning ? 'pause' : 'play'} style={styles.icon} />
             </Button>
-            <Button transparent onPress={this.goToSettings}>
+            <Button onPress={this.goToSettings}>
               <Icon name="menu" style={styles.icon} />
             </Button>
           </FooterTab>
