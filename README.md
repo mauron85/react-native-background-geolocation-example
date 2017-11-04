@@ -45,6 +45,8 @@ Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`
 </resources>
 ```
 
+### Quirks
+
 Module [react-native-maps](https://github.com/lelandrichardson/react-native-maps) v0.8.2 requires Google Play Services library version 9.4.0, we need to change
 `node_modules/react-native-mauron85-background-geolocation/android/lib/build.gradle`
 
@@ -54,6 +56,16 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:9.4.0'
     ...
 }
+```
+
+NOTE: Following fix has been already applied in this project
+As version 0.11.0 of react-native-maps there is another [issue](https://github.com/airbnb/react-native-maps/issues/669),
+which can be solved by adding following lines into `app/build.gradle`:
+
+```
+compile "com.google.android.gms:play-services-base:+"
+compile 'com.google.android.gms:play-services-location:+'
+compile 'com.google.android.gms:play-services-maps:+'
 ```
 
 More info https://github.com/lelandrichardson/react-native-maps/blob/master/docs/installation.md
