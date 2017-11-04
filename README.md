@@ -2,6 +2,8 @@
 
 ![Screenshot](/screenshot.png)
 
+**Note:** This example is using React Native Background Geolocation [v4](https://github.com/mauron85/react-native-background-geolocation/tree/next).
+
 # Intro
 
 This is an example app of [react-native-mauron85-background-geolocation](https://www.npmjs.com/package/react-native-mauron85-background-geolocation) component.
