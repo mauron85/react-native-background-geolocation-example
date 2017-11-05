@@ -21,5 +21,6 @@ export const i18n = {
   notificationIconColor: 'Color',
   // iOS
   activityType: 'Activity',
+  pauseLocationUpdates: 'Pause Updates',
   saveBatteryOnBackground: 'Save battery'
 };

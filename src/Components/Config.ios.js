@@ -37,7 +37,8 @@ export const activities = [
 class Config extends Component {
   static defaultProps = {
     activityType: 0,
-    saveBatteryOnBackground: false,
+    pauseLocationUpdates: false,
+    saveBatteryOnBackground: false
   };
 
   constructor(props) {
@@ -57,6 +58,7 @@ class Config extends Component {
   render() {
     const {
       activityType,
+      pauseLocationUpdates,
       saveBatteryOnBackground
     } = this.props;
 
@@ -70,6 +72,17 @@ class Config extends Component {
         <List style={{ flex: 1, backgroundColor: '#fff' }}>
           <ListItem itemDivider>
             <Text>iOS</Text>
+          </ListItem>
+          <ListItem>
+            <Body>
+              <Text>{i18n.pauseLocationUpdates}</Text>
+            </Body>
+            <Right>
+              <Switch
+                value={pauseLocationUpdates}
+                onValueChange={val => this.onChange(val, 'pauseLocationUpdates')}
+              />
+            </Right>
           </ListItem>
           <ListItem>
             <Body>
