@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
 });
 
 const LogItem = ({
+  id: locationId,
   selected,
-  locationId,
   latitude,
   longitude,
   time,
@@ -111,7 +111,7 @@ class PendingLocationsScene extends PureComponent {
     }
   }
 
-  _keyExtractor = (item, index) => item.locationId;
+  _keyExtractor = (item, index) => item.id;
 
   render() {
     const { selectedLocationId, locations, isReady } = this.state;
@@ -139,7 +139,7 @@ class PendingLocationsScene extends PureComponent {
                 keyExtractor={this._keyExtractor}
                 renderItem={({ item }) => {
                   const date = new Date(item.time);
-                  const selected = selectedLocationId === item.locationId;
+                  const selected = selectedLocationId === item.id;
                   return (
                     <LogItem
                       {...item}
