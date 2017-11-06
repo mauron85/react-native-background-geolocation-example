@@ -16,7 +16,7 @@ import {
   Text,
   Input
 } from 'native-base';
-import { providers } from '../Components/Config.android';
+import { providers } from '../Components/Config.common';
 import { activities } from '../Components/Config.ios';
 import { i18n } from '../i18n';
 
@@ -205,7 +205,7 @@ export default class ModalExample extends PureComponent {
                         this.props.onChange(configProp, formatter ? formatter(val) : val)}
                     >
                       {configPropType.items.map(({ label, value }) => (
-                        <Picker.Item key={value} label={label} value={value} />
+                        <Picker.Item key={value} label={label} value={String(value)} />
                       ))}
                     </Picker>
                   );

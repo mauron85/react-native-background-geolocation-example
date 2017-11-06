@@ -16,10 +16,27 @@ import {
   List,
   ListItem
 } from 'native-base';
+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import { i18n } from '../i18n';
+
+export const providers = [
+  {
+    label: 'Distance Filter',
+    value: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER
+  },
+  {
+    label: 'Activity',
+    value: BackgroundGeolocation.ACTIVITY_PROVIDER
+  },
+  {
+    label: 'Raw',
+    value: BackgroundGeolocation.RAW_PROVIDER
+  }
+];
 
 class Config extends Component {
   static defaultProps = {
+    locationProvider: 0,
     desiredAccuracy: 0,
     stationaryRadius: 0,
     distanceFilter: 0,
@@ -49,6 +66,7 @@ class Config extends Component {
 
   render() {
     const {
+      locationProvider,
       desiredAccuracy,
       stationaryRadius,
       distanceFilter,
@@ -135,6 +153,15 @@ class Config extends Component {
               value={stopOnTerminate}
               onValueChange={val => this.onChange(val, 'stopOnTerminate')}
             />
+          </Right>
+        </ListItem>
+        <ListItem onPress={() => this.onPress('locationProvider')}>
+          <Body>
+            <Text>{i18n.locationProvider}</Text>
+            <Text note>{providers[locationProvider].label}</Text>
+          </Body>
+          <Right>
+            <Icon name="arrow-forward" />
           </Right>
         </ListItem>
         <ListItem itemDivider>

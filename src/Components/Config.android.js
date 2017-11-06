@@ -16,29 +16,14 @@ import {
   List,
   ListItem
 } from 'native-base';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
 import CommonConfig from './Config.common';
 import { i18n } from '../i18n';
-
-export const providers = [
-  {
-    label: 'Distance Filter',
-    value: String(
-      BackgroundGeolocation.provider.ANDROID_DISTANCE_FILTER_PROVIDER
-    )
-  },
-  {
-    label: 'Activity',
-    value: String(BackgroundGeolocation.provider.ANDROID_ACTIVITY_PROVIDER)
-  }
-];
 
 class ConfigScene extends Component {
   static defaultProps = {
     interval: 0,
     fastestInterval: 0,
     activitiesInterval: 0,
-    locationProvider: 0,
     startOnBoot: false,
     notificationTitle: '',
     notificationText: '',
@@ -99,15 +84,6 @@ class ConfigScene extends Component {
             <Body>
               <Text>{i18n.activitiesInterval}</Text>
               <Text note>{activitiesInterval} [ms]</Text>
-            </Body>
-            <Right>
-              <Icon name="arrow-forward" />
-            </Right>
-          </ListItem>
-          <ListItem onPress={() => this.onPress('locationProvider')}>
-            <Body>
-              <Text>{i18n.locationProvider}</Text>
-              <Text note>{providers[locationProvider].label}</Text>
             </Body>
             <Right>
               <Icon name="arrow-forward" />
