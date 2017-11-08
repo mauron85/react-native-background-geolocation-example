@@ -104,3 +104,7 @@ E/Google Maps Android API(31792): Ensure that the following Android Key exists:
 E/Google Maps Android API(31792): 	API Key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA                                             
 E/Google Maps Android API(31792): 	Android Application (<cert_fingerprint>;<package_name>): 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00;com.rnbgexample
 ```
+
+# Mocking Locations & Test Server
+
+Follow instruction in [background-geolocation-server](https://github.com/mauron85/background-geolocation-server) project.
