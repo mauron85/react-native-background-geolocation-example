@@ -8,10 +8,6 @@
 
 This is an example app of [react-native-mauron85-background-geolocation](https://www.npmjs.com/package/react-native-mauron85-background-geolocation) component.
 
-# Binary build
-
-There is apk in [dist](/dist) folder.
-
 # How to build
 
 In cloned directory:
