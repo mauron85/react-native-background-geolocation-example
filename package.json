@@ -11,7 +11,7 @@
     "react": "^16.0.0",
     "react-native": "^0.49.0",
     "react-native-maps": "^0.17.1",
-    "react-native-mauron85-background-geolocation": "^0.4.0-alpha.3",
+    "react-native-mauron85-background-geolocation": "^0.4.0-alpha.6",
     "react-native-vector-icons": "^4.3.0",
     "react-navigation": "^1.0.0-beta.15"
   }
