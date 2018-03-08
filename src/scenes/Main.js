@@ -190,7 +190,10 @@ class MainScene extends PureComponent {
         BackgroundGeolocation.stop();
         return false;
       }
-      if (authorization == BackgroundGeolocation.auth.AUTHORIZED) {
+      if (authorization == 99) {
+        // authorization yet to be determined
+        BackgroundGeolocation.start();
+      } else if (authorization == BackgroundGeolocation.AUTHORIZED) {
         // calling start will also ask user for permission if needed
         // permission error will be handled in permisision_denied event
         BackgroundGeolocation.start();
