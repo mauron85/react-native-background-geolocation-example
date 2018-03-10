@@ -99,21 +99,23 @@ class MainScene extends PureComponent {
         '[INFO] BackgroundGeolocation authorization status: ' + status
       );
       if (status !== BackgroundGeolocation.AUTHORIZED) {
-        Alert.alert(
-          'App requires location tracking',
-          'Would you like to open location settings?',
-          [
-            {
-              text: 'Yes',
-              onPress: () => BackgroundGeolocation.showLocationSettings()
-            },
-            {
-              text: 'No',
-              onPress: () => console.log('No Pressed'),
-              style: 'cancel'
-            }
-          ]
-        );
+        // we need to set delay after permission prompt or otherwise alert will not be shown
+        setTimeout(() =>
+          Alert.alert(
+            'App requires location tracking',
+            'Would you like to open app settings?',
+            [
+              {
+                text: 'Yes',
+                onPress: () => BackgroundGeolocation.showAppSettings()
+              },
+              {
+                text: 'No',
+                onPress: () => console.log('No Pressed'),
+                style: 'cancel'
+              }
+            ]
+        ), 1000);
       }
     });
 
@@ -190,6 +192,7 @@ class MainScene extends PureComponent {
         BackgroundGeolocation.stop();
         return false;
       }
+
       if (!locationServicesEnabled) {
         Alert.alert(
           'Location services disabled',
