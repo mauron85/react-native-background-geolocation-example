@@ -98,9 +98,9 @@ class MainScene extends PureComponent {
       console.log(
         '[INFO] BackgroundGeolocation authorization status: ' + status
       );
-      if (status !== BackgroundGeolocation.auth.AUTHORIZED) {
+      if (status !== BackgroundGeolocation.AUTHORIZED) {
         Alert.alert(
-          'Location services are disabled',
+          'App requires location tracking',
           'Would you like to open location settings?',
           [
             {
@@ -185,20 +185,12 @@ class MainScene extends PureComponent {
   }
 
   toggleTracking() {
-    BackgroundGeolocation.checkStatus(({ isRunning, authorization }) => {
+    BackgroundGeolocation.checkStatus(({ isRunning, locationServicesEnabled, authorization }) => {
       if (isRunning) {
         BackgroundGeolocation.stop();
         return false;
       }
-      if (authorization == 99) {
-        // authorization yet to be determined
-        BackgroundGeolocation.start();
-      } else if (authorization == BackgroundGeolocation.AUTHORIZED) {
-        // calling start will also ask user for permission if needed
-        // permission error will be handled in permisision_denied event
-        BackgroundGeolocation.start();
-      } else {
-        // Location services are disabled
+      if (!locationServicesEnabled) {
         Alert.alert(
           'Location services disabled',
           'Would you like to open location settings?',
@@ -211,6 +203,27 @@ class MainScene extends PureComponent {
               text: 'No',
               onPress: () => console.log('No Pressed'),
               style: 'cancel'
+            }
+          ]
+        );
+        return false;
+      }
+
+      if (authorization == 99) {
+        // authorization yet to be determined
+        BackgroundGeolocation.start();
+      } else if (authorization == BackgroundGeolocation.AUTHORIZED) {
+        // calling start will also ask user for permission if needed
+        // permission error will be handled in permisision_denied event
+        BackgroundGeolocation.start();
+      } else {
+        Alert.alert(
+          'App requires location tracking',
+          'Please grant permission',
+          [
+            {
+              text: 'Ok',
+              onPress: () => BackgroundGeolocation.start()
             }
           ]
         );
