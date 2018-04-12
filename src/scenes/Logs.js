@@ -28,7 +28,8 @@ class LogsScene extends PureComponent {
     super(props);
     this.state = {
       isRefreshing: false,
-      logEntries: []
+      logEntries: [],
+      logEntriesOffset: 0,
     };
     this.refresh = this.refresh.bind(this);
   }
@@ -40,16 +41,45 @@ class LogsScene extends PureComponent {
   }
 
   refresh() {
-    this.setState({ isRefreshing: true });
-    BackgroundGeolocation.getLogEntries(100, logEntries => {
+    this.fetchLogs(0, true);
+  }
+
+  fetchLogs(offset, fullRefresh) {
+    if (fullRefresh) {
+      this.setState({ isRefreshing: true });
+    }
+    BackgroundGeolocation.getLogEntries(100, offset, 'DEBUG', logEntries => {
+      const formattedLogEntries = logFormatter(logEntries);
       this.setState({
         isRefreshing: false,
-        logEntries: logFormatter(logEntries)
+        logEntries: fullRefresh ? formattedLogEntries : this.state.logEntries.concat(formattedLogEntries),
+        logEntriesOffset: offset,
       });
     });
   }
 
   _keyExtractor = (item, index) => item.id;
+
+  _renderItem = ({ item }) => (
+    <ListItem
+      style={{
+        marginLeft: 2,
+        backgroundColor: item.style.backgroundColor
+      }}
+    >
+      <Text
+        style={{
+          color: item.style.color
+        }}
+      >
+        {item.text}
+      </Text>
+    </ListItem>
+  );
+
+  _onEndReached = () => {
+    this.fetchLogs(this.state.logEntriesOffset + 100);
+  };
 
   renderContent(logEntries) {
     return (
@@ -57,22 +87,8 @@ class LogsScene extends PureComponent {
         style={{ flex: 1, backgroundColor: '#fff' }}
         data={logEntries}
         keyExtractor={this._keyExtractor}
-        renderItem={({ item }) => (
-          <ListItem
-            style={{
-              marginLeft: 2,
-              backgroundColor: item.style.backgroundColor
-            }}
-          >
-            <Text
-              style={{
-                color: item.style.color
-              }}
-            >
-              {item.text}
-            </Text>
-          </ListItem>
-        )}
+        renderItem={this._renderItem}
+        onEndReached={this._onEndReached}
       />
     );
   }

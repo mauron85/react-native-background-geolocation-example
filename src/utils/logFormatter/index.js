@@ -1,6 +1,6 @@
 import { padLeft, logFormatter } from './logFormatter';
 
-export default function androidLogFormatter(logEntries) {
+export default function commonLogFormatter(logEntries) {
   var STYLES = Object();
   STYLES['ERROR'] = { backgroundColor:'white',color:'red' };
   STYLES['WARN'] = { backgroundColor:'black',color:'yellow' };
@@ -13,9 +13,9 @@ export default function androidLogFormatter(logEntries) {
     var dateStr = [d.getFullYear(), padLeft(d.getMonth()+1,2), padLeft(d.getDate(),2)].join('/');
     var timeStr = [padLeft(d.getHours(),2), padLeft(d.getMinutes(),2), padLeft(d.getSeconds(),2)].join(':');
     return {
-      id: logEntry.timestamp,
+      id: logEntry.rowid || logEntry.timestamp,
       style: STYLES[logEntry.level],
-      text: ['[', dateStr, ' ', timeStr, ']\t', logEntry.message].join('')
+      text: ['[', dateStr, ' ', timeStr, ']\t', logEntry.message, logEntry.stackTrace ? logEntry.stackTrace : ''].join('')
     };
   }
 
