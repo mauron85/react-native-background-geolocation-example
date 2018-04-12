@@ -16,8 +16,8 @@ ext {
     compileSdkVersion   = 23
     targetSdkVersion    = 23
     buildToolsVersion   = "23.0.3"
-    supportLibVersion   = "23.+"
-    googlePlayServicesVersion = "10.2.4"
+    supportLibVersion   = "23+"
+    googlePlayServicesVersion = "11+"
     androidMapsUtilsVersion = "0.5"
 }
 

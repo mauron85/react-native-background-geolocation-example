@@ -148,7 +148,7 @@ dependencies {
     // why are these neccessary?
     // https://github.com/react-community/react-native-maps/issues/1408
     compile "com.google.android.gms:play-services-base:11+"
-    compile 'com.google.android.gms:play-services-location:+'
+    compile 'com.google.android.gms:play-services-location:11+'
     compile 'com.google.android.gms:play-services-maps:11+'
 }
 

@@ -44,29 +44,35 @@ Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`
 ```
 
 ### Quirks
-
-Module [react-native-maps](https://github.com/lelandrichardson/react-native-maps) v0.8.2 requires Google Play Services library version 9.4.0, we need to change
-`node_modules/react-native-mauron85-background-geolocation/android/lib/build.gradle`
+For compatibility with react-native-maps v0.20.1 library versions were locked in root `build.gradle` file:
 
 ```
-dependencies {
-    ...
-    compile 'com.google.android.gms:play-services-location:9.4.0'
-    ...
+ext {
+    compileSdkVersion   = 23
+    targetSdkVersion    = 23
+    buildToolsVersion   = "23.0.3"
+    supportLibVersion   = "23+"
+    googlePlayServicesVersion = "11+"
+    androidMapsUtilsVersion = "0.5"
 }
 ```
 
-NOTE: Following fix has been already applied in this project
-As version 0.11.0 of react-native-maps there is another [issue](https://github.com/airbnb/react-native-maps/issues/669),
-which can be solved by adding following lines into `app/build.gradle`:
+More info https://github.com/react-community/react-native-maps/blob/v0.20.1/docs/installation.md
+
+As version 0.20.1 of react-native-maps there is another [issue](https://github.com/react-community/react-native-maps/issues/1408),
+which can be resolved by updating following lines in `app/build.gradle`:
 
 ```
-compile "com.google.android.gms:play-services-base:+"
-compile 'com.google.android.gms:play-services-location:+'
-compile 'com.google.android.gms:play-services-maps:+'
+compile(project(':react-native-maps')) {
+    exclude group: 'com.google.android.gms', module: 'play-services-base'
+    exclude group: 'com.google.android.gms', module: 'play-services-maps'
+}
+compile "com.google.android.gms:play-services-base:11+"
+compile 'com.google.android.gms:play-services-location:11+'
+compile 'com.google.android.gms:play-services-maps:11+'
 ```
 
-More info https://github.com/lelandrichardson/react-native-maps/blob/master/docs/installation.md
+React-native-maps version 0.21 is not [supported yet](https://github.com/mauron85/react-native-background-geolocation/issues/176).
 
 ### Run in Simulator
 
