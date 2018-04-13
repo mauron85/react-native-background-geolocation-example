@@ -16,7 +16,28 @@ import {
   Spinner
 } from 'native-base';
 import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
-import logFormatter from '../utils/logFormatter';
+
+const STYLES = Object();
+STYLES['ERROR'] = { backgroundColor:'white',color:'red' };
+STYLES['WARN'] = { backgroundColor:'black',color:'yellow' };
+STYLES['INFO'] = { backgroundColor:'white',color:'blue' };
+STYLES['TRACE'] = { backgroundColor:'white',color:'black' };
+STYLES['DEBUG'] = { backgroundColor:'white',color:'black' };
+
+function padLeft(nr, n, str) {
+  return Array(n - String(nr).length + 1).join(str || '0') + nr;
+}
+
+function formatLogEntry(logEntry) {
+  const d = new Date(Number(logEntry.timestamp));
+  const dateStr = [d.getFullYear(), padLeft(d.getMonth()+1,2), padLeft(d.getDate(),2)].join('/');
+  const timeStr = [padLeft(d.getHours(),2), padLeft(d.getMinutes(),2), padLeft(d.getSeconds(),2)].join(':');
+  return {
+    eventId: logEntry.id || logEntry.timestamp,
+    style: STYLES[logEntry.level],
+    text: ['[', dateStr, ' ', timeStr, ']\t', logEntry.message, logEntry.stackTrace ? logEntry.stackTrace : ''].join('')
+  };
+}
 
 class LogsScene extends PureComponent {
   static navigationOptions = {
@@ -29,8 +50,9 @@ class LogsScene extends PureComponent {
     this.state = {
       isRefreshing: false,
       logEntries: [],
-      logEntriesOffset: 0,
     };
+    this.rowLimit = 100;
+    this.lastEventId = 0; // intentionally not set in state as it's asynchronnous
     this.refresh = this.refresh.bind(this);
   }
 
@@ -41,44 +63,51 @@ class LogsScene extends PureComponent {
   }
 
   refresh() {
-    this.fetchLogs(0, true);
+    this.fetchLogs(0);
   }
 
-  fetchLogs(offset, fullRefresh) {
-    if (fullRefresh) {
-      this.setState({ isRefreshing: true });
+  fetchLogs(lastEventId) {
+    if (lastEventId < 0) {
+      return;
     }
-    BackgroundGeolocation.getLogEntries(100, offset, 'DEBUG', logEntries => {
-      const formattedLogEntries = logFormatter(logEntries);
+    if (lastEventId == 0) {
+      this.setState({ isRefreshing: true, logEntries: [] });
+    }
+    BackgroundGeolocation.getLogEntries(this.rowLimit, lastEventId, 'DEBUG', newLogEntries => {
+      const { logEntries } = this.state
+      const lastEventId = newLogEntries.length > 0 ? newLogEntries[newLogEntries.length - 1].id : -1;
+      this.lastEventId = lastEventId;
       this.setState({
         isRefreshing: false,
-        logEntries: fullRefresh ? formattedLogEntries : this.state.logEntries.concat(formattedLogEntries),
-        logEntriesOffset: offset,
+        logEntries: logEntries.concat(newLogEntries),
       });
     });
   }
 
   _keyExtractor = (item, index) => item.id;
 
-  _renderItem = ({ item }) => (
-    <ListItem
-      style={{
-        marginLeft: 2,
-        backgroundColor: item.style.backgroundColor
-      }}
-    >
-      <Text
+  _renderItem = ({ item }) => {
+    const entry = formatLogEntry(item);
+    return (
+      <ListItem
         style={{
-          color: item.style.color
+          marginLeft: 2,
+          backgroundColor: entry.style.backgroundColor
         }}
       >
-        {item.text}
-      </Text>
-    </ListItem>
-  );
+        <Text
+          style={{
+            color: entry.style.color
+          }}
+        >
+          {`${entry.eventId}:${entry.text}`}
+        </Text>
+      </ListItem>
+    );
+  };
 
   _onEndReached = () => {
-    this.fetchLogs(this.state.logEntriesOffset + 100);
+    this.fetchLogs(this.lastEventId);
   };
 
   renderContent(logEntries) {
