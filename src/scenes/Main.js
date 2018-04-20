@@ -129,7 +129,26 @@ class MainScene extends PureComponent {
         requestAnimationFrame(() => {
           const longitudeDelta = 0.01;
           const latitudeDelta = 0.01;
+          const region = Object.assign({}, location, {
+            latitudeDelta,
+            longitudeDelta
+          });
+          const locations = this.state.locations.slice(0);
+          locations.push(location);
+          this.setState({ locations, region });
+          BackgroundGeolocation.endTask(taskKey);
+        });
+      });
+    });
+
+    BackgroundGeolocation.on('stationary', (location) => {
+      console.log('[DEBUG] BackgroundGeolocation stationary', location);
+      BackgroundGeolocation.startTask(taskKey => {
+        requestAnimationFrame(() => {
+          const stationaries = this.state.stationaries.slice(0);
           if (location.radius) {
+            const longitudeDelta = 0.01;
+            const latitudeDelta = 0.01;
             const region = Object.assign({}, location, {
               latitudeDelta,
               longitudeDelta
@@ -137,31 +156,11 @@ class MainScene extends PureComponent {
             const stationaries = this.state.stationaries.slice(0);
             stationaries.push(location);
             this.setState({ stationaries, region });
-          } else {
-            const region = Object.assign({}, location, {
-              latitudeDelta,
-              longitudeDelta
-            });
-            const locations = this.state.locations.slice(0);
-            locations.push(location);
-            this.setState({ locations, region });
           }
           BackgroundGeolocation.endTask(taskKey);
         });
       });
     });
-
-    // BackgroundGeolocation.on('stationary', (stationary) => {
-    //   console.log('[DEBUG] BackgroundGeolocation stationary', stationary);
-    //   BackgroundGeolocation.startTask(taskKey => {
-    //     requestAnimationFrame(() => {
-    //       const stationaries = this.state.stationaries.slice(0);
-    //       stationaries.push(stationary);
-    //       this.setState({ stationaries });
-    //       BackgroundGeolocation.endTask(taskKey);
-    //     });
-    //   });
-    // });
 
     BackgroundGeolocation.on('foreground', () => {
       console.log('[INFO] App is in foreground');
