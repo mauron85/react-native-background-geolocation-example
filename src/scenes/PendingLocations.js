@@ -66,6 +66,7 @@ class PendingLocationsScene extends PureComponent {
     this.onLocationSelected = this.onLocationSelected.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.refresh = this.refresh.bind(this);
+    this.forceSync = this.forceSync.bind(this);
   }
 
   componentDidMount() {
@@ -74,11 +75,25 @@ class PendingLocationsScene extends PureComponent {
     });
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.syncTimeout);
+  }
+
   refresh() {
     this.setState({ selectedLocationId: -1, isReady: false });
     BackgroundGeolocation.getValidLocations(locations => {
       this.setState({ locations, isReady: true });
     });
+  }
+
+  forceSync() {
+    if (!this.syncTimeout) {
+      BackgroundGeolocation.forceSync();
+      this.syncTimeout = setTimeout(() => {
+        this.refresh();
+        this.syncTimeout = null;
+      }, 5000);
+    }
   }
 
   onLocationSelected(locationId) {
@@ -126,7 +141,11 @@ class PendingLocationsScene extends PureComponent {
           <Body>
             <Title>Pending Locations</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={this.refresh}>
+              <Icon name="refresh" />
+            </Button>
+          </Right>
         </Header>
         <Content>
           {(() => {
@@ -154,9 +173,14 @@ class PendingLocationsScene extends PureComponent {
         </Content>
         <Footer>
           <FooterTab>
-            <Button onPress={this.onDelete}>
+            <Button danger onPress={this.onDelete}>
               <Text>
                 {selectedLocationId > -1 ? 'Delete location' : 'Delete all'}
+              </Text>
+            </Button>
+            <Button onPress={this.forceSync}>
+              <Text>
+                Force sync
               </Text>
             </Button>
           </FooterTab>

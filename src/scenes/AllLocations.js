@@ -86,7 +86,11 @@ class AllLocationsScene extends PureComponent {
           <Body>
             <Title>All Locations</Title>
           </Body>
-          <Right />
+          <Right>
+            <Button transparent onPress={this.refresh}>
+              <Icon name="refresh" />
+            </Button>
+          </Right>
         </Header>
         <Content>
           {(() => {
