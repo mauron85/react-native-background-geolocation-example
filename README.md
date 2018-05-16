@@ -2,8 +2,6 @@
 
 ![Screenshot](/screenshot.png)
 
-**Note:** This example is using React Native Background Geolocation [v4](https://github.com/mauron85/react-native-background-geolocation/tree/next).
-
 # Intro
 
 This is an example app of [react-native-mauron85-background-geolocation](https://www.npmjs.com/package/react-native-mauron85-background-geolocation) component.
@@ -12,9 +10,7 @@ This is an example app of [react-native-mauron85-background-geolocation](https:/
 
 In cloned directory:
 
-1. `npm install`
-
-Also read [setup instructions](https://www.npmjs.com/package/react-native-mauron85-background-geolocation).
+`yarn install`
 
 ## Android
 
@@ -24,10 +20,6 @@ Check android lib versions:
 |----------------------------|---------|
 | Google Play Services       | >=30    |
 | Google Repository          | >=28    |
-
-Generate your SHA1 key to restrict usage to your app only (optional):
-
-`keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android`
 
 Go to [Google API Console](https://console.developers.google.com) and select your project, or create new one:
 
@@ -43,7 +35,22 @@ Add Google Maps Android API Key in `android/app/src/main/res/values/strings.xml`
 </resources>
 ```
 
-### Quirks
+### Run on device (or simulator)
+
+`react-native run-android`
+
+## iOS
+
+### Run on device (or simulator)
+
+`react-native run-ios`
+
+Enable **Freeway Drive** in `Debug` ➜ `Location` menu in iOS Simulator.
+
+# Quirks
+
+## Android
+
 For compatibility with react-native-maps v0.20.1 library versions were locked in root `build.gradle` file:
 
 ```
@@ -60,7 +67,7 @@ ext {
 More info https://github.com/react-community/react-native-maps/blob/v0.20.1/docs/installation.md
 
 As version 0.20.1 of react-native-maps there is another [issue](https://github.com/react-community/react-native-maps/issues/1408),
-which can be resolved by updating following lines in `app/build.gradle`:
+which was resolved by updating following lines in `app/build.gradle`:
 
 ```
 compile(project(':react-native-maps')) {
@@ -73,28 +80,6 @@ compile 'com.google.android.gms:play-services-maps:11+'
 ```
 
 React-native-maps version 0.21 is not [supported yet](https://github.com/mauron85/react-native-background-geolocation/issues/176).
-
-### Run in Simulator
-
-`adb reverse tcp:8081 tcp:8081`
-
-`react-native run-android`
-
-### Run on Device
-
-```
-$ cd android && ./gradlew installDebugAndroidTest
-```
-
-## iOS
-
-in iOS Simulator:
-Enable **Freeway Drive** in `Debug` ➜ `Location` menu.
-
-### Run in Simulator
-
-`react-native run-ios`
-
 
 # Troubleshoot
 
