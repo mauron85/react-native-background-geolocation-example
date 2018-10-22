@@ -76,10 +76,25 @@ class MainScene extends PureComponent {
       this.setState({ locations: locationsPast24Hours, region });
     };
 
-    BackgroundGeolocation.getValidLocations(
-      handleHistoricLocations.bind(this),
-      logError
-    );
+    // BackgroundGeolocation.getValidLocations(
+    //   handleHistoricLocations.bind(this),
+    //   logError
+    // );
+
+    BackgroundGeolocation.getCurrentLocation(lastLocation => {
+      let region = this.state.region;
+      const latitudeDelta = 0.01;
+      const longitudeDelta = 0.01;
+      region = Object.assign({}, lastLocation, {
+        latitudeDelta,
+        longitudeDelta
+      });
+      this.setState({ locations: [lastLocation], region });
+    }, (error) => {
+      setTimeout(() => {
+        Alert.alert('Error obtaining current location', JSON.stringify(error));
+      }, 100);
+    });
 
     BackgroundGeolocation.on('start', () => {
       // service started successfully
