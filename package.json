@@ -5,14 +5,20 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
+  "devDependencies": {
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.50.0",
+    "react-test-renderer": "16.6.1"
+  },
   "dependencies": {
-    "native-base": "2.3.1",
+    "native-base": "^2.8.1",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0",
-    "react-native": "^0.51.0",
-    "react-native-maps": "^0.20.1",
-    "react-native-mauron85-background-geolocation": "^0.5.0-alpha.44",
-    "react-native-vector-icons": "^4.3.0",
+    "react": "^16.6.1",
+    "react-native": "^0.57.7",
+    "react-native-maps": "^0.22.0",
+    "react-native-mauron85-background-geolocation": "^0.5.0-alpha.50",
+    "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^1.0.0-beta.15"
   }
 }

@@ -1,11 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        buildToolsVersion = "27.0.3"
+        minSdkVersion = 16
+        compileSdkVersion = 27
+        targetSdkVersion = 26
+        supportLibVersion = "27.1.1"
+    }
     repositories {
+        maven { url 'https://maven.google.com' }
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:3.1.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -13,25 +21,39 @@ buildscript {
 }
 
 ext {
-    compileSdkVersion   = 23
-    targetSdkVersion    = 23
-    buildToolsVersion   = "23.0.3"
-    supportLibVersion   = "23.1.1"
-    googlePlayServicesVersion = "11+"
-    androidMapsUtilsVersion = "0.5"
+  compileSdkVersion = 26
+  targetSdkVersion = 26
+  buildToolsVersion = "27.0.3"
+  supportLibVersion = "27.1.0"
+  googlePlayServicesVersion = "11.8.0"
+  androidMapsUtilsVersion = "0.5+"
+  gradle3EXPERIMENTAL = "yes"
 }
 
 allprojects {
     repositories {
         mavenLocal()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        maven { url 'https://maven.google.com' }
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
+        }
+    }
+}
+
+// Workaround linting errors for react-native-maps
+// https://stackoverflow.com/questions/24420391/how-to-disable-lint-abortonerror-in-android-gradle-plugin-from-top-level-of-mult
+subprojects {
+    afterEvaluate {
+        if (getPlugins().hasPlugin('android') ||
+            getPlugins().hasPlugin('android-library')) {
+
+            println name // for debugging
+
+            configure(android.lintOptions) {
+                abortOnError false
+            }
         }
     }
 }
