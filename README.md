@@ -4,7 +4,7 @@
 
 # Intro
 
-This is an example app of [react-native-mauron85-background-geolocation](https://www.npmjs.com/package/react-native-mauron85-background-geolocation) component.
+This is an example app of [@mauron85/react-native-background-geolocation](https://www.npmjs.com/package/@mauron85/react-native-background-geolocation) component.
 
 # How to build
 

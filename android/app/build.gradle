@@ -141,8 +141,8 @@ android {
 }
 
 dependencies {
+    compile project(':@mauron85_react-native-background-geolocation')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-mauron85-background-geolocation')
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.facebook.react:react-native:+"  // From node_modules

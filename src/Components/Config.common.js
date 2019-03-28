@@ -16,7 +16,7 @@ import {
   List,
   ListItem
 } from 'native-base';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import { i18n } from '../i18n';
 
 export const providers = [

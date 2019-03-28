@@ -13,7 +13,7 @@ import {
   Icon
 } from 'native-base';
 import MapView from 'react-native-maps';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import TrackingDot from '../res/TrackingDot.png';
 
 const styles = StyleSheet.create({

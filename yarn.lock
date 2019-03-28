@@ -640,6 +640,11 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@mauron85/react-native-background-geolocation@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.5.3.tgz#449a3f02fa2dd89198ad7db812ae95a37a983309"
+  integrity sha512-KzWzA55jWzCodXqHGdeKnw7MOXXsEO/f4+vd9KVicq7oyGLnEHA+t9DcpRd2YEEsFca515TNHmAcvh6vL1B0Kg==
+
 abab@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.0.tgz#aba0ab4c5eee2d4c79d3487d85450fb2376ebb0f"
@@ -4809,11 +4814,6 @@ react-native-maps@^0.22.0:
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.22.1.tgz#ce856e71970e872e596e6fa4773279cae2c4dcdd"
   integrity sha512-JjBpAXjzZY8AW4HTcAZxX+cGk6e6i+J5Vd//DViMUe0bRkKKv92ds1W9rqZ+o9PhUqdP++3DvKv0jrB05icqKA==
-
-react-native-mauron85-background-geolocation@^0.5.0-alpha.50:
-  version "0.5.0-alpha.50"
-  resolved "https://registry.yarnpkg.com/react-native-mauron85-background-geolocation/-/react-native-mauron85-background-geolocation-0.5.0-alpha.50.tgz#92223955d6e6d36942aedcff6043105bccb77c1d"
-  integrity sha512-IVL6SzmkGg5JrbjNgSjZD4ZAqdPAwWkG6hRVSvHQvNOX+lRnkO8m8MAC9rzAD/tpEzhNZHZhBlV97WJl/xt8fQ==
 
 react-native-safe-area-view@0.11.0:
   version "0.11.0"

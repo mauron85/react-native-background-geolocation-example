@@ -12,7 +12,7 @@ import {
   Spinner,
   Icon
 } from 'native-base';
-import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 import Config from '../Components/Config';
 import Modal from './EditConfigModal';
 
