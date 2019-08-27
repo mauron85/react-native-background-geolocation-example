@@ -732,10 +732,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@mauron85/react-native-background-geolocation@^0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.5.5.tgz#26716602d0252d4da9c4b6cea7bc9e026260eac6"
-  integrity sha512-YAVuEYwys5NmqBVy27Mj3CYBzXFufDUvsvUl8wBMHe7vNRNj90eXcgn8+3/zM/tWmsfuLTSVB3EhH31M0IQGPA==
+"@mauron85/react-native-background-geolocation@^0.5.6":
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/@mauron85/react-native-background-geolocation/-/react-native-background-geolocation-0.5.6.tgz#85d72175d22b1f4d73276fa618c15cd5f92f2d19"
+  integrity sha512-KK3Q4QIQ1LyacqiqYFGpJZaKYM92raK3QZz5Nrf7rJwnclEIvweJ7hhd1rwRhEsGbr3ym5jtL8LKcuu/cOdUsQ==
 
 "@react-native-community/cli-platform-android@^2.6.0", "@react-native-community/cli-platform-android@^2.9.0":
   version "2.9.0"
