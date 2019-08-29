@@ -187,6 +187,9 @@ class MainScene extends PureComponent {
 
     BackgroundGeolocation.checkStatus(({ isRunning }) => {
       this.setState({ isRunning });
+      if (isRunning) {
+        BackgroundGeolocation.start();
+      }
     });
   }
 

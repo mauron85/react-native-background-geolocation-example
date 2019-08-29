@@ -12,7 +12,7 @@
     "react-test-renderer": "16.6.1"
   },
   "dependencies": {
-    "@mauron85/react-native-background-geolocation": "^0.5.6",
+    "@mauron85/react-native-background-geolocation": "^0.6.1",
     "native-base": "^2.13.5",
     "prop-types": "^15.5.10",
     "react": "16.8.6",
