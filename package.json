@@ -16,7 +16,7 @@
     "native-base": "^2.13.5",
     "prop-types": "^15.5.10",
     "react": "16.8.6",
-    "react-native": "0.60.5",
+    "react-native": "0.62.3",
     "react-native-maps": "^0.25.0",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^1.0.0-beta.15"
